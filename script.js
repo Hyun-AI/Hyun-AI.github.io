@@ -1281,6 +1281,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 
+
+
+
+
+
 /**
 ============================================================================================================================
 경진대회 
@@ -1455,54 +1460,287 @@ document.addEventListener('click', function(event) {
     }
 });
 
-function openVideoWindow() {
-    // 새 창을 열고 HTML 내용을 작성합니다
-    const videoWindow = window.open('videos.html', '_blank', 'width=800,height=800');
-    videoWindow.document.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-            <title>프로젝트 영상</title>
-            <style>
-                body {
-                    margin: 0;
-                    padding: 20px;
-                    display: flex;
-                    flex-direction: column;
-                    height: 100vh;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ============================================================================================================================
+// side-project
+// ============================================================================================================================
+// 프로젝트 설정
+const sideProjectData = {
+    'db-관리자': {
+        title: 'DB 관리자 도구',
+        category: 'Management Tool',
+        type: 'Database',
+        description: '데이터베이스를 효율적으로 관리하고 모니터링할 수 있는 관리자 도구입니다.',
+        headerText: "Side Projects - DB 관리자",
+        mainDescription: "데이터베이스를 효율적으로 관리하고 모니터링할 수 있는 관리자 도구입니다. AI와 데이터를 활용하여 직관적인 인터페이스를 구현했습니다.",
+        tags: ['Database', 'Management'],
+        mdFile: 'md/side-project/db관리자도구.md',
+        image: 'images/home/aurora.png'
+    },
+    '가계부': {
+        title: '가계부',
+        category: 'Finance Tool',
+        type: 'Personal Finance',
+        description: '개인 재무를 관리할 수 있는 스마트한 가계부 도구입니다.',
+        headerText: "Side Projects - 가계부",
+        mainDescription: "AI 기반의 지능형 가계부로 수입/지출을 효과적으로 관리하고 분석할 수 있습니다.",
+        tags: ['Finance', 'AI'],
+        mdFile: 'md/side-project/신상품모니터링1.md',
+        image: 'images/background/stratosphere.jpg'
+    },
+    '챗봇': {
+        title: 'AI 챗봇',
+        category: 'AI Tool',
+        type: 'Chatbot',
+        description: 'AI 기반의 지능형 챗봇 시스템입니다.',
+        headerText: "Side Projects - AI 챗봇",
+        mainDescription: "자연어 처리 기술을 활용한 지능형 챗봇으로 사용자와 자연스러운 대화가 가능합니다.", 
+        tags: ['AI', 'NLP'],
+        mdFile: 'md/side-project/신상품모니터링2.md',
+        image: 'images/background/switzerland.jpg'
+    }
+};
+
+document.addEventListener('DOMContentLoaded', function() {
+    // ProjectSlider 클래스 정의
+    class ProjectSlider {
+        constructor() {
+            this.container = document.querySelector('.side-project__slider-container');
+            this.cards = Array.from(document.querySelectorAll('.side-project__card'));
+            this.currentIndex = 0;
+            this.totalSlides = this.cards.length;
+            
+            this.prevBtn = document.querySelector('.side-project__nav--prev');
+            this.nextBtn = document.querySelector('.side-project__nav--next');
+            
+            this.init();
+        }
+    
+        init() {
+            this.updateSlides();
+            this.bindEvents();
+        }
+
+        updateDescription(index) {
+            const project = sideProjectData[this.cards[index].getAttribute('project')];
+            const infoSection = document.querySelector('.side-project__info');
+            
+            if (!project) return;
+
+            infoSection.innerHTML = `
+                <div class="side-project__header">
+                    ${project.headerText}
+                </div>
+                <h2 class="side-project__title">
+                    ${project.title}
+                </h2>
+                <p class="side-project__description">
+                    ${project.mainDescription}
+                </p>
+                <div class="side-project__tags">
+                    ${project.tags.map(tag => `
+                        <span class="side-project__tag">${tag}</span>
+                    `).join('')}
+                </div>
+            `;
+        }
+    
+        updateSlides() {
+            this.cards.forEach((card, index) => {
+                card.classList.remove('active', 'prev', 'next');
+                
+                if (index === this.currentIndex) {
+                    card.classList.add('active');
+                    this.updateDescription(index);
+                    this.animateCardContent(card, true);
+                } else if (index === this.getPrevIndex()) {
+                    card.classList.add('prev');
+                    this.animateCardContent(card, false);
+                } else if (index === this.getNextIndex()) {
+                    card.classList.add('next');
+                    this.animateCardContent(card, false);
                 }
-                .video-frame {
-                    flex: 1;
-                    margin: 10px 0;
-                    width: 100%;
+            });
+        }
+    
+        animateCardContent(card, isActive) {
+            const overlay = card.querySelector('.side-project__card-overlay');
+            const content = card.querySelector('.side-project__card-content');
+            
+            if (isActive) {
+                overlay.style.opacity = '1';
+                overlay.style.transform = 'translateY(0)';
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            } else {
+                overlay.style.opacity = '1';
+                overlay.style.transform = 'translateY(0)';
+                content.style.opacity = '1';
+                content.style.transform = 'translateY(0)';
+            }
+        }
+    
+        prevSlide() {
+            this.currentIndex = this.getPrevIndex();
+            this.updateSlides();
+        }
+    
+        nextSlide() {
+            this.currentIndex = this.getNextIndex();
+            this.updateSlides();
+        }
+    
+        getPrevIndex() {
+            return (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+        }
+    
+        getNextIndex() {
+            return (this.currentIndex + 1) % this.totalSlides;
+        }
+    
+        bindEvents() {
+            if (this.prevBtn) {
+                this.prevBtn.addEventListener('click', () => {
+                    this.prevSlide();
+                });
+            }
+            
+            if (this.nextBtn) {
+                this.nextBtn.addEventListener('click', () => {
+                    this.nextSlide();
+                });
+            }
+    
+            let touchStartX = 0;
+            let touchEndX = 0;
+    
+            this.container.addEventListener('touchstart', (e) => {
+                touchStartX = e.touches[0].clientX;
+            }, { passive: true });
+    
+            this.container.addEventListener('touchend', (e) => {
+                touchEndX = e.changedTouches[0].clientX;
+                const diff = touchStartX - touchEndX;
+    
+                if (Math.abs(diff) > 50) {
+                    if (diff > 0) {
+                        this.nextSlide();
+                    } else {
+                        this.prevSlide();
+                    }
                 }
-            </style>
-        </head>
-        <body>
-            <iframe class="video-frame" src="video/competitions/tree_project_1.mp4" frameborder="0" allowfullscreen></iframe>
-            <iframe class="video-frame" src="video/competitions/tree_project_2.mp4" frameborder="0" allowfullscreen></iframe>
-        </body>
-        </html>
-    `);
-    videoWindow.document.close();
-}
+            }, { passive: true });
+        }
+    }
 
+    const slider = new ProjectSlider();
 
+    const slideLayer = document.querySelector('.project-slide-layer');
+    const slideTitle = slideLayer.querySelector('.slide-layer__title');
+    const slideBody = slideLayer.querySelector('.slide-layer__body');
+    const closeButton = slideLayer.querySelector('.slide-layer__close');
+    const projectCards = document.querySelectorAll('.side-project__card');
+ 
+    async function loadMarkdownFile(filePath) {
+        try {
+            const response = await fetch(filePath);
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            return await response.text();
+        } catch (error) {
+            console.error('마크다운 파일 로드 에러:', error);
+            throw error;
+        }
+    }
 
+    function handleImages() {
+        const images = slideBody.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
 
+            img.addEventListener('error', () => {
+                img.parentElement.innerHTML = `
+                    <div class="image-error">이미지를 불러올 수 없습니다</div>
+                `;
+            });
+        });
+    }
 
+    async function showProjectDetail(projectId) {
+        try {
+            const project = sideProjectData[projectId];
+            if (!project) {
+                throw new Error(`프로젝트 ID "${projectId}"를 찾을 수 없습니다.`);
+            }
 
+            slideTitle.textContent = project.title;
+            slideBody.innerHTML = '<div class="loading">Loading...</div>';
+            
+            slideLayer.classList.add('is-visible');
+            document.body.style.overflow = 'hidden';
 
+            const markdownContent = await loadMarkdownFile(project.mdFile);
+            const parsedContent = marked.parse(markdownContent);
+            
+            slideBody.innerHTML = parsedContent;
+            handleImages();
 
+        } catch (error) {
+            console.error('프로젝트 로드 에러:', error);
+            slideBody.innerHTML = `
+                <div class="slide-layer__error">
+                    <h3>프로젝트를 불러오는데 실패했습니다</h3>
+                    <p>${error.message}</p>
+                </div>
+            `;
+        }
+    }
 
+    function closeSlideLayer() {
+        slideLayer.classList.remove('is-visible');
+        document.body.style.overflow = '';
+        setTimeout(() => {
+            slideBody.innerHTML = '';
+        }, 300);
+    }
 
-
-
-
-
-
-/**
-============================================================================================================================
-side-project
-============================================================================================================================
-*/
+    projectCards.forEach(card => {
+        card.addEventListener('click', (e) => {
+            e.preventDefault();
+            const projectId = card.getAttribute('project');
+            if (projectId) {
+                showProjectDetail(projectId);
+            }
+        });
+    });
+    
+    closeButton.addEventListener('click', closeSlideLayer);
+    
+    slideLayer.addEventListener('click', (e) => {
+        if (e.target === slideLayer) {
+            closeSlideLayer();
+        }
+    });
+    
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && slideLayer.classList.contains('is-visible')) {
+            closeSlideLayer();
+        }
+    });
+});

@@ -1160,15 +1160,6 @@ aside > p:first-of-type::before {
     cursor: pointer; /* 커서 스타일 추가 */
 }
 
-
-/* 카드 이미지 스타일 */
-.worked-card-image {
-    width: 100%;
-    height: 180px; /* 이미지 높이 조정 */
-    object-fit: cover;
-    border-radius: 20px 20px 0 0;
-}
-
 .worked-card.active {
     transform: translateX(-50%) scale(1);
     left: 50%;
@@ -1188,6 +1179,14 @@ aside > p:first-of-type::before {
     left: 50%;
     opacity: 0.6;
     z-index: 2;
+}
+
+/* 카드 이미지 스타일 */
+.worked-card-image {
+    width: 100%;
+    height: 180px; /* 이미지 높이 조정 */
+    object-fit: cover;
+    border-radius: 20px 20px 0 0;
 }
 
 /* 카드 내용 스타일 */
@@ -1383,7 +1382,7 @@ aside > p:first-of-type::before {
     position: absolute;
     right: 3rem;
     top: 3rem;
-    transform: translateY(-50%);
+    transform: translateY(-50%);  /* 기본 위치 조정 */
     color: rgb(212, 163, 115);
     width: 40px;
     height: 40px;
@@ -1396,18 +1395,15 @@ aside > p:first-of-type::before {
     font-weight: 300;
     line-height: 1;
     background: transparent;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgba(212, 163, 115, 0.3);
-    border-image: initial;
+    border: 2px solid rgba(212, 163, 115, 0.3);
     border-radius: 50%;
-    transition: 0.3s;
+    transition: all 0.3s ease;  /* transition 속성 통합 */
 }
 
 .worked-modal-close:hover {
     background: rgba(212, 163, 115, 0.1);
     border-color: rgba(212, 163, 115, 0.6);
-    transform: rotate(90deg);
+    transform: translateY(-50%) rotate(90deg);  /* 두 transform 효과 결합 */
 }
 
 /* =========================================
@@ -1722,8 +1718,8 @@ aside > p:first-of-type::before {
 .competitions-wrapper {
     position: relative;
     z-index: 2;
-    width: 90%;
-    max-width: 1400px;
+    width: 70%;
+    /* max-width: 1400px; */
     margin: 0 auto;
     padding: 0 2rem;
 }
@@ -1903,6 +1899,11 @@ aside > p:first-of-type::before {
     background: rgba(255, 255, 255, 0.05);
 }
 
+
+.competitions-table th:nth-child(2),  /* 기간 열 헤더 */
+.competitions-table td:nth-child(2) { /* 기간 열 데이터 */
+    text-align: left;
+}
 
 
 
@@ -2276,4 +2277,720 @@ aside > p:first-of-type::before {
 
 .video-link:hover {
     background-color: #f5f5f5;
+}
+
+
+
+
+
+
+
+
+
+
+/* ===========================================================================================================================================  */
+
+/* =========================================
+ * 사이드 프로젝트 섹션 기본 레이아웃
+ * ========================================= */
+
+.side-project-section {
+    position: relative;
+    min-height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0F1624;
+    padding: 3rem;
+    overflow: hidden;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 섹션 제목 */
+.personal-project-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    text-align: center;
+    color: #fff;
+}
+
+/* 프로젝트 그리드 */
+.side-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+    padding: 2rem 0;
+}
+
+/* =========================================
+ * 사이드 프로젝트 카드 스타일
+ * ========================================= */
+
+/* 카드 기본 스타일 */
+.side-project-card {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: #1A202C;
+    height: 300px;
+}
+
+/* 카드 이미지 */
+.side-project-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* 카드 호버 효과 */
+.side-project-card:hover {
+    transform: translateY(-5px);
+}
+
+.side-project-card:hover img {
+    transform: scale(1.05);
+}
+
+/* =========================================
+ * 프로젝트 오버레이 스타일
+ * ========================================= */
+
+/* 오버레이 기본 스타일 */
+.side-project-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+    padding: 1.5rem;
+    color: white;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+/* 오버레이 호버 효과 */
+.side-project-card:hover .side-project-overlay {
+    transform: translateY(0);
+}
+
+/* 오버레이 제목 */
+.side-project-overlay h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #D4A373;
+}
+
+/* 오버레이 설명 */
+.side-project-overlay p {
+    font-size: 1rem;
+    opacity: 0.8;
+}
+
+/* =========================================
+ * 프로젝트 상세 모달 스타일
+ * ========================================= */
+
+/* 모달 오버레이 */
+.side-project-detail-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.8);
+    z-index: 1000;
+    overflow-y: auto;
+}
+
+/* 모달 콘텐츠 */
+.side-project-detail-modal .modal-content {
+    background: #1A202C;
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    border-radius: 10px;
+    padding: 2rem;
+    position: relative;
+}
+
+/* =========================================
+ * 반응형 디자인
+ * ========================================= */
+
+/* 태블릿 화면에서의 그리드 설정 */
+@media (max-width: 1024px) {
+    .side-projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* 모바일 화면에서의 설정 */
+@media (max-width: 768px) {
+    .side-project-card {
+        height: 250px;
+    }
+    
+    .side-project-overlay {
+        padding: 1rem;
+    }
+    
+    .side-project-overlay h3 {
+        font-size: 1.3rem;
+    }
+}
+
+
+/* =========================================
+ * Side Project 섹션 스타일
+ * ========================================= */
+/* 사이드 프로젝트 섹션 기본 스타일 */
+.side-project {
+    position: relative;
+    background: url('images/background/sky.jpg') no-repeat center center;
+    background-size: cover;
+    min-height: 100vh;
+    padding: 4rem 0;
+    color: #fff;
+    overflow: hidden;
+}
+
+.side-project::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(15, 22, 36, 0.85);
+    z-index: 1;
+}
+
+.side-project__wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: 1600px;
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+/* 프로젝트 정보 영역 수정 */
+.side-project__info {
+    flex: 0 0 400px;
+    margin-top: 5vh; /* 위쪽 여백 추가 */
+
+}
+
+.side-project__location {
+    font-size: 1rem;
+    color: #D4A373;
+    margin-bottom: 1rem;
+}
+
+.side-project__title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+}
+
+.side-project__description {
+    font-size: 1.1rem;
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.side-project__tags {
+    display: flex;
+    gap: 1rem;
+}
+
+.side-project__tag {
+    padding: 0.5rem 1rem;
+    background: rgba(212, 163, 115, 0.2);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    color: #D4A373;
+}
+
+/* 슬라이더 영역 */
+.side-project__slider {
+    flex: 1;
+    position: relative;
+    height: 600px;
+}
+
+/* 슬라이더 컨테이너 스타일 수정 */
+.side-project__slider-container {
+    position: relative;
+    width: 100%;
+    height: 750px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    overflow: hidden;
+}
+
+/* 카드 기본 스타일 */
+.side-project__card {
+    position: absolute;
+    width: 350px;
+    height: 450px;
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 24px;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    cursor: pointer;
+}
+
+/* 활성 카드 스타일 */
+.side-project__card.active {
+    transform: translateX(0) scale(1) translateZ(0);
+    z-index: 3;
+    box-shadow: 0 25px 50px rgba(0,0,0,0.3);
+}
+
+/* 이전 카드 스타일 */
+.side-project__card.prev {
+    transform: translateX(-75%) scale(0.85) translateZ(-100px);
+    opacity: 0.6;
+    z-index: 2;
+}
+
+/* 다음 카드 스타일 */
+.side-project__card.next {
+    transform: translateX(75%) scale(0.85) translateZ(-100px);
+    opacity: 0.6;
+    z-index: 2;
+}
+
+/* 카드 내부 컨테이너 */
+.side-project__card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 카드 이미지 */
+.side-project__card-inner img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 24px;
+}
+
+/* 카드 오버레이 */
+.side-project__card-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 40px;
+    background: linear-gradient(
+        to top,
+        rgba(0, 0, 0, 0.95) 0%,
+        rgba(0, 0, 0, 0.8) 30%,
+        rgba(0, 0, 0, 0.6) 50%,
+        rgba(0, 0, 0, 0.2) 80%,
+        transparent 100%
+    );
+    color: white;
+    border-radius: 0 0 24px 24px;
+}
+
+/* 카드 컨텐츠 스타일 */
+.side-project__card-content {
+    transform: translateY(20px);
+    opacity: 0;
+    transition: all 0.4s ease;
+}
+
+.side-project__card.active .side-project__card-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+/* 카드 제목 및 카테고리 */
+.side-project__card-category {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 8px;
+}
+
+.side-project__card-title {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #D4A373;
+}
+
+/* 네비게이션 버튼 */
+.side-project__nav {
+    position: absolute;
+    top: 65%;  
+    transform: translateY(-50%);
+    width: 50px;
+    height: 50px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    z-index: 10;
+}
+
+/* 네비게이션 버튼 호버 효과 */
+.side-project__nav:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.1); /* 호버 시 약간 확대 */
+}
+
+/* 네비게이션 버튼 좌우 위치 조정 */
+.side-project__nav--prev {
+    left: 2rem;
+}
+
+.side-project__nav--next {
+    right: 2rem;
+}
+
+/* 네비게이션 아이콘 크기 및 스타일 수정 */
+.side-project__nav-icon {
+    font-size: 2.5rem; /* 아이콘 크기 증가 */
+    color: rgba(255, 255, 255, 0.9);
+    font-weight: 300; /* 더 가벼운 무게감 */
+    line-height: 1; /* 아이콘이 버튼 중앙에 정확히 위치하게 */
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .side-project__nav {
+        width: 50px;
+        height: 50px;
+    }
+    
+    .side-project__nav-icon {
+        font-size: 2rem;
+    }
+    
+    .side-project__nav--prev {
+        left: 1.5rem;
+    }
+    
+    .side-project__nav--next {
+        right: 1.5rem;
+    }
+}
+
+
+
+/* 프로그레스 바 */
+.side-project__current {
+    color: #fff;
+    font-size: 1.2rem;
+}
+
+.side-project__progress-bar {
+    width: 1100px;
+    height: 2.5px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 1px;
+    overflow: hidden;
+}
+
+.side-project__progress-fill {
+    height: 100%;
+    background: #D4A373;
+    transition: width 0.4s ease;
+}
+
+/* 호버 효과 */
+.side-project__card:hover .side-project__card-inner {
+    transform: scale(1.02);
+}
+
+/* 반응형 디자인 */
+@media (max-width: 1200px) {
+    .side-project__card {
+        width: 400px;
+        height: 600px;
+    }
+}
+
+@media (max-width: 768px) {
+    .side-project__card {
+        width: 300px;
+        height: 450px;
+    }
+    
+    .side-project__nav {
+        width: 40px;
+        height: 40px;
+    }
+    
+    .side-project__nav--prev {
+        left: 20px;
+    }
+    
+    .side-project__nav--next {
+        right: 20px;
+    }
+    
+    .side-project__card-title {
+        font-size: 1.5rem;
+    }
+}
+
+
+
+
+
+
+
+
+
+
+
+/* 슬라이드 레이어 스타일 */
+.project-slide-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.slide-layer__content {
+    position: fixed;
+    right: 0;
+    left: auto;
+    bottom: -100%;
+    width: min(1100px, 100%);
+    height: min(870px, 100vh);
+    transition: bottom 0.8s ease-out;
+    overflow-y: scroll; /* auto 대신 scroll 사용 */
+    border-left: 2px solid #D4A373;
+    border-top: 2px solid #D4A373;
+    border-radius: 30px 0 0 30px;
+    /* background-image: url('images/background/switzerland.jpg'); */
+    background: #0F1624 !important;
+    background-size: cover;
+    background-position: center;
+}
+
+/* 스크롤바 스타일 - 이 부분만 남기고 다른 스크롤바 관련 스타일은 모두 제거 */
+.slide-layer__content::-webkit-scrollbar {
+    display: none; /* 스크롤바 완전히 숨기기 */
+}
+
+.project-slide-layer.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+.project-slide-layer.is-visible .slide-layer__content {
+    bottom: 0; /* 보여질 때는 bottom을 0으로 설정하여 위로 올라오게 함 */
+}
+
+.slide-layer__header {
+    position: sticky;
+    top: 0;
+    padding: 1.5rem 2rem;
+    background: #0F1624;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 10;
+    /* background-image: url('images/background/blackboard2.jpg'); */
+}
+
+.slide-layer__title {
+    font-size: 1.8rem;
+    color: #D4A373;
+    margin: 0;
+}
+
+.slide-layer__close {
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    line-height: 1;
+    transition: opacity 0.2s ease;
+}
+
+.slide-layer__close:hover {
+    opacity: 0.8;
+}
+
+/* 모바일 최적화 */
+@media (max-width: 768px) {
+    .slide-layer__header {
+        padding: 1rem 1.5rem;
+    }
+
+    .slide-layer__title {
+        font-size: 1.5rem;
+    }
+}
+
+.slide-layer__body {
+    padding: 2rem 3rem;
+    margin: 0 auto; /* 중앙 정렬 */
+    max-width: 1000px; /* 콘텐츠의 최대 너비 설정 */
+}
+
+/* 로딩 표시 */
+.loading {
+    text-align: center;
+    padding: 2rem;
+    color: #D4A373;
+    font-size: 1.2rem;
+}
+
+/* 에러 메시지 */
+.slide-layer__error {
+    background: rgba(255, 0, 0, 0.1);
+    border-radius: 8px;
+    padding: 2rem;
+    margin: 1rem 0;
+    color: #ff6b6b;
+}
+
+.slide-layer__error h3 {
+    color: #ff6b6b;
+    margin-bottom: 1rem;
+}
+
+/* 스크롤바 스타일 */
+.slide-layer__content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.slide-layer__content::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.slide-layer__content::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.3);
+    border-radius: 4px;
+}
+
+.slide-layer__content::-webkit-scrollbar-thumb:hover {
+    background: rgba(212, 163, 115, 0.5);
+}
+
+/* 슬라이드 레이어 스타일 */
+.project-slide-layer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.slide-layer__content {
+    position: fixed;
+    right: 0;
+    left: auto;
+    bottom: -100%;
+    width: min(1100px, 100%); /* 최대 1100px, 화면이 작아지면 100%로 조정 */
+    height: min(870px, 100vh); /* 최대 870px, 화면이 작아지면 100vh로 조정 */
+    background: #0F1624;
+    transition: bottom 0.8s ease-out;
+    overflow-y: auto;
+    border-left: 2px solid #D4A373;
+    border-top: 2px solid #D4A373;
+    border-radius: 30px 0 0 30px;
+    background-image: url('images/background/switzerland.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+/* 기존 슬라이더 영역 스타일 수정 */
+.side-project__slider-container {
+    position: relative;
+    width: 100%;
+    height: min(750px, 80vh); /* 최대 750px, 화면이 작아지면 80vh로 조정 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    perspective: 1000px;
+    overflow: hidden;
+}
+
+.side-project__wrapper {
+    position: relative;
+    z-index: 2;
+    max-width: min(1800px, 90%);
+    margin: 0 auto;
+    padding: 2rem;
+    display: flex;
+    align-items: center;
+    gap: 4rem;
+}
+
+
+/* 반응형 디자인 개선 */
+@media (max-width: 1200px) {
+    .slide-layer__content {
+        border-radius: 20px 0 0 0;
+    }
+
+    .side-project__wrapper {
+        gap: 2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .slide-layer__content {
+        width: 100%;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .slide-layer__body {
+        padding: 1.5rem;
+        max-width: 100%; /* 모바일에서는 최대 너비 100%로 */
+    }
+
+    .side-project__info {
+        flex: 0 0 100%; /* 모바일에서는 전체 너비 사용 */
+        margin-top: 2vh;
+    }
+
+    .side-project__title {
+        font-size: 2.5rem; /* 모바일에서는 글자 크기 줄임 */
+    }
+
+    .side-project__slider {
+        flex: 0 0 100%; /* 모바일에서는 전체 너비 사용 */
+        height: auto;
+    }
 }

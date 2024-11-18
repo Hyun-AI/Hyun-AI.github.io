@@ -268,7 +268,7 @@
 
                         <table class="competitions-table">
                             <thead>
-                                <tr>
+                                <tr>                                    
                                     <th>주최</th>
                                     <th>기간</th>
                                     <th>대회명</th>
@@ -350,7 +350,7 @@
                                 </tr>
                                 <tr>
                                     <td>세종특별자치시</td>
-                                    <td>21.08.10 ~ 2021.09.30</td>
+                                    <td>21.08.10 ~ 21.09.30</td>
                                     <td>세종시 빅데이터 아이디어 공모전</td>
                                     <td>본선진출</td>
                                     <td>-</td>
@@ -377,12 +377,16 @@
                                                 <img src="icons/competitions/pdf.png" class="competitions-file-icon" alt="PDF" title="발표자료">
                                             </a>
                                             <div class="video-container">
-                                                <button type="button" onclick="openVideoWindow()" class="video-btn">
-                                                    <img src="icons/competitions/playbuttom.png" class="competitions-file-icon" alt="비디오" title="영상보기">                                                    
-                                                </button>                                       
-                                                <div class="video-links">
-                                                    <a href="video/competitions/tree_project_1.mp4" target="_blank" class="video-link">영상1</a>
-                                                    <a href="video/competitions/tree_project_2.mp4" target="_blank" class="video-link">영상2</a>
+                                                <button onclick="toggleVideos(this)" class="video-btn">
+                                                    <img src="icons/competitions/playbuttom.png" class="competitions-file-icon" alt="비디오" title="영상보기">
+                                                </button>
+                                                <div class="video-links" style="display: none;">
+                                                    <div class="video-link">
+                                                        <a href="video/competitions/tree_project_1.mp4" target="_blank" class="competitions-pdf-link">영상1</a>
+                                                    </div>
+                                                    <div class="video-link">
+                                                        <a href="video/competitions/tree_project_2.mp4" target="_blank" class="competitions-pdf-link">영상2</a>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
@@ -416,6 +420,94 @@
                         <button class="competitions-modal-close">×</button>
                     </div>
                     <div class="competitions-modal-content"></div>
+                </div>
+            </div>
+        </section>
+
+                <!-- 
+        =======================
+        side project 섹션
+        =======================  -->   
+        <!-- 개인 프로젝트 -->
+        <!-- index.html의 개인 프로젝트 섹션 수정 -->
+        <!-- Side Project 섹션 -->
+        <!-- Side Project 섹션 -->
+        <section id="side-projects" class="section side-project">
+            <div class="side-project__wrapper">
+                <!-- 왼쪽 설명 영역 -->
+                <div class="side-project__info">
+                    <!-- 이 부분은 JavaScript에서 동적으로 변경됩니다 -->
+                </div>
+    
+                <!-- 슬라이더 영역 -->
+                <div class="side-project__slider">
+                    <div class="side-project__slider-container">
+                        <!-- DB 관리자 카드 -->
+                        <div class="side-project__card" project="db-관리자">
+                            <div class="side-project__card-inner">
+                                <img src="images/home/aurora.png" alt="DB 관리자 도구">
+                                <div class="side-project__card-overlay">
+                                    <div class="side-project__card-content">
+                                        <p class="side-project__card-category">Management Tool</p>
+                                        <h3 class="side-project__card-title">DB 관리자 도구</h3>
+                                        <p>Database</p>
+                                        <p class="side-project__card-description">
+                                            데이터베이스를 효율적으로 관리하고 모니터링할 수 있는 관리자 도구입니다.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- 가계부 카드 -->
+                        <div class="side-project__card" project="가계부">
+                            <div class="side-project__card-inner">
+                                <img src="images/background/stratosphere.jpg" alt="가계부">
+                                <div class="side-project__card-overlay">
+                                    <div class="side-project__card-content">
+                                        <p class="side-project__card-category">Management Tool</p>
+                                        <h3 class="side-project__card-title">가계부</h3>
+                                        <p>Database</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+    
+                        <!-- 챗봇 카드 -->
+                        <div class="side-project__card" project="챗봇">
+                            <div class="side-project__card-inner">
+                                <img src="images/background/switzerland.jpg" alt="챗봇">
+                                <div class="side-project__card-overlay">
+                                    <div class="side-project__card-content">
+                                        <p class="side-project__card-category">Management Tool</p>
+                                        <h3 class="side-project__card-title">챗봇</h3>
+                                        <p>Database</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- 네비게이션 버튼 -->
+                    <button class="side-project__nav side-project__nav--prev">
+                        <i class="fa-solid fa-angle-left fa-2xl" style="color: #ffffff;"></i>
+                    </button>
+                    <button class="side-project__nav side-project__nav--next">
+                        <i class="fa-solid fa-angle-right fa-2xl" style="color: #ffffff;"></i>
+                    </button>
+                </div>
+            </div>
+    
+            <!-- 프로젝트 상세 정보 모달 -->
+            <div class="project-slide-layer">
+                <div class="slide-layer__content">
+                    <div class="slide-layer__header">
+                        <h2 class="slide-layer__title"></h2>
+                        <button class="slide-layer__close">×</button>
+                    </div>
+                    <div class="slide-layer__body markdown-content">
+                        <div class="loading">Loading...</div>
+                    </div>
                 </div>
             </div>
         </section>
