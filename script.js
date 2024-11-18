@@ -1431,7 +1431,61 @@ document.addEventListener('click', (e) => {
 
 
 
+function toggleVideos(button) {
+    const links = button.nextElementSibling;
+    const allLinks = document.querySelectorAll('.video-links');
+    
+    // 다른 모든 비디오 링크 메뉴 닫기
+    allLinks.forEach(el => {
+        if (el !== links) {
+            el.style.display = 'none';
+        }
+    });
+    
+    // 현재 메뉴 토글
+    links.style.display = links.style.display === 'block' ? 'none' : 'block';
+}
 
+// 문서 클릭 시 모든 메뉴 닫기
+document.addEventListener('click', function(event) {
+    if (!event.target.closest('.video-container')) {
+        document.querySelectorAll('.video-links').forEach(el => {
+            el.style.display = 'none';
+        });
+    }
+});
+
+function openVideoWindow() {
+    // 새 창을 열고 HTML 내용을 작성합니다
+    const videoWindow = window.open('videos.html', '_blank', 'width=800,height=800');
+    videoWindow.document.write(`
+        <!DOCTYPE html>
+        <html>
+        <head>
+            <title>프로젝트 영상</title>
+            <style>
+                body {
+                    margin: 0;
+                    padding: 20px;
+                    display: flex;
+                    flex-direction: column;
+                    height: 100vh;
+                }
+                .video-frame {
+                    flex: 1;
+                    margin: 10px 0;
+                    width: 100%;
+                }
+            </style>
+        </head>
+        <body>
+            <iframe class="video-frame" src="video/competitions/tree_project_1.mp4" frameborder="0" allowfullscreen></iframe>
+            <iframe class="video-frame" src="video/competitions/tree_project_2.mp4" frameborder="0" allowfullscreen></iframe>
+        </body>
+        </html>
+    `);
+    videoWindow.document.close();
+}
 
 
 
