@@ -19,48 +19,238 @@ marked.setOptions({
 
 /**
 ============================================================================================================================
-배경
+애니메이션 슬라이더
 ============================================================================================================================
 */
-// 배경 파티클 생성
-function createParticles() {
-    const particlesContainer = document.querySelector('.particles');
-    const particleCount = 50;
+// 모달 열림 이벤트 처리를 위한 커스텀 이벤트 디스패처
+// 모달 열림 이벤트 처리를 위한 커스텀 이벤트 디스패처
+// 스크롤 방지 함수 개선
+class VerticalSlider {
+    constructor() {
+        this.wrapper = document.querySelector('.animation-wrapper');
+        this.sections = document.querySelectorAll('.animation-section');
+        this.dots = document.querySelectorAll('.animation-progress-dot');
+        this.currentIndex = 0;
+        this.isAnimating = false;
+        this.init();
+    }
 
-    for (let i = 0; i < particleCount; i++) {
-        const particle = document.createElement('div');
-        particle.className = 'particle';
+    init() {
+        this.setActiveSection(0);
+        this.bindEvents();
+    }
 
-        // 랜덤 위치 설정
-        particle.style.left = `${Math.random() * 100}%`;
-        particle.style.top = `${Math.random() * 100}%`;
+    bindEvents() {
+        // 휠 이벤트
+        window.addEventListener('wheel', (e) => {
+            if (this.isAnimating || this.isModalOpen()) return;
+            e.preventDefault();
 
-        // 랜덤 애니메이션 지연
-        particle.style.animationDelay = `${Math.random() * 8}s`;
+            this.isAnimating = true;
+            if (e.deltaY > 0) {
+                this.navigate(1);
+            } else {
+                this.navigate(-1);
+            }
+        }, { passive: false });
 
-        particlesContainer.appendChild(particle);
+        // 키보드 이벤트
+        document.addEventListener('keydown', (e) => {
+            if (this.isAnimating || this.isModalOpen()) return;
+
+            if (e.key === 'ArrowDown') {
+                e.preventDefault();
+                this.navigate(1);
+            } else if (e.key === 'ArrowUp') {
+                e.preventDefault();
+                this.navigate(-1);
+            }
+        });
+
+        // 네비게이션 닷 클릭
+        this.dots.forEach((dot, index) => {
+            dot.addEventListener('click', () => {
+                if (this.isAnimating || this.isModalOpen()) return;
+                this.navigateToSection(index);
+            });
+        });
+
+        // 네비게이션 링크 클릭
+        document.querySelectorAll('.navbar-link').forEach((link, index) => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                if (this.isAnimating || this.isModalOpen()) return;
+                this.navigateToSection(index);
+            });
+        });
+    }
+
+    isModalOpen() {
+        return document.querySelector('.modal.active, .worked-detail-modal.active, .worked-business-panel.active, .competitions-modal-overlay.active, .project-slide-layer.is-visible') !== null;
+    }
+
+    navigate(direction) {
+        const nextIndex = this.currentIndex + direction;
+        if (nextIndex < 0 || nextIndex >= this.sections.length) {
+            this.isAnimating = false;
+            return;
+        }
+
+        this.navigateToSection(nextIndex);
+    }
+
+    navigateToSection(index) {
+        if (index === this.currentIndex) {
+            this.isAnimating = false;
+            return;
+        }
+
+        const direction = index > this.currentIndex ? 1 : -1;
+
+        // 현재 섹션 처리
+        if (this.sections[this.currentIndex]) {
+            this.sections[this.currentIndex].classList.add(direction > 0 ? 'previous' : 'next');
+            this.sections[this.currentIndex].classList.remove('active');
+        }
+
+        // 새 섹션 활성화
+        this.setActiveSection(index);
+
+        // 트랜지션
+        this.wrapper.style.transform = `translateY(-${index * 100}vh)`;
+
+        // 상태 업데이트
+        this.currentIndex = index;
+
+        // 애니메이션 완료 후 상태 초기화
+        setTimeout(() => {
+            this.sections.forEach(section => {
+                section.classList.remove('previous', 'next');
+            });
+            this.isAnimating = false;
+        }, 1000);
+    }
+
+    setActiveSection(index) {
+        // 섹션 활성화 상태 업데이트
+        this.sections.forEach((section, i) => {
+            section.classList.toggle('active', i === index);
+        });
+
+        // 닷 네비게이션 업데이트
+        this.dots.forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+
+        // 네비게이션 링크 활성화 상태 업데이트
+        document.querySelectorAll('.navbar-link').forEach((link, i) => {
+            link.classList.toggle('active', i === index);
+        });
     }
 }
+
+// 페이지 로드시 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    new VerticalSlider();
+});
 
 /**
 ============================================================================================================================
 타이핑 효과
 ============================================================================================================================
 */
-async function typeText(element, text, delay = 200) {
-    element.textContent = '';
-
-    for (let char of text) {
-        element.textContent += char;
+async function typeText(element, text, delay = 50) { // delay를 50ms로 줄임
+    let displayText = '';
+    for (let i = 0; i < text.length; i++) {
+        displayText += text[i];
+        element.innerHTML = getHighlightedHTML(displayText);
         await new Promise(resolve => setTimeout(resolve, delay));
+        
+        // 부드러운 슬라이딩 효과 추가
+        element.style.transform = 'translateY(0)';
+        element.style.opacity = '1';
     }
 }
 
-// 페이지 로드 시 실행
+function initFlowingText() {
+    const flowingText = document.querySelector('.flowing-text');
+    const text = flowingText.textContent;
+    flowingText.textContent = '';
+    
+    [...text].forEach((char, index) => {
+        const span = document.createElement('span');
+        span.textContent = char;
+        span.className = 'flowing-char';
+        span.style.setProperty('--char-index', index);
+        
+        // 공백 처리
+        if (char.trim() === '') {
+            span.innerHTML = '&nbsp;';
+        }
+        
+        // 하이라이트 처리 (선택적)
+        if (char.match(/[A-Z]/)) {
+            span.classList.add('highlight');
+        }
+        
+        flowingText.appendChild(span);
+        
+        // 각 문자를 순차적으로 표시
+        setTimeout(() => {
+            span.classList.add('active');
+        }, index * 100);
+    });
+}
+
+// 페이지 로드시 실행
+document.addEventListener('DOMContentLoaded', initFlowingText);
+
+// 스크롤 시 애니메이션 재생 (선택적)
+function handleScroll() {
+    const flowingTexts = document.querySelectorAll('.flowing-text');
+    
+    flowingTexts.forEach(text => {
+        const rect = text.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+        
+        if (isVisible) {
+            text.querySelectorAll('.flowing-char').forEach((char, index) => {
+                setTimeout(() => {
+                    char.classList.add('active');
+                }, index * 100);
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', handleScroll);
+
+// 페이지 로드시 실행
+document.addEventListener('DOMContentLoaded', initFlowingText);
+
+// 스크롤 시 애니메이션 재생 (선택적)
+function handleScroll() {
+    const flowingTexts = document.querySelectorAll('.flowing-text');
+    
+    flowingTexts.forEach(text => {
+        const rect = text.getBoundingClientRect();
+        const isVisible = rect.top < window.innerHeight && rect.bottom >= 0;
+        
+        if (isVisible) {
+            text.querySelectorAll('.flowing-char').forEach((char, index) => {
+                setTimeout(() => {
+                    char.classList.add('active');
+                }, index * 100);
+            });
+        }
+    });
+}
+
+window.addEventListener('scroll', handleScroll);
+
 // 페이지 로드 시 실행
 document.addEventListener('DOMContentLoaded', function () {
     // 파티클 생성
-    createParticles();
 
     // 타이핑 효과 시작
     const typingElement = document.querySelector('.typing-text');
@@ -1310,12 +1500,6 @@ async function showCompetitionDetails(competitionId) {
     const overlay = document.getElementById('competitions-modal-overlay');
     const modal = document.getElementById('competitions-modal');
     
-    // body 스크롤 방지
-    document.body.style.overflow = 'hidden';
-    // 스크롤바 너비만큼 padding-right 추가하여 화면 흔들림 방지
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-    
     try {
         const competition = competitionData[competitionId];
         if (!competition) {
@@ -1341,11 +1525,12 @@ async function showCompetitionDetails(competitionId) {
             </div>
         `;
 
-        // 모달 표시
-        overlay.style.display = 'flex';
-        setTimeout(() => {
-            modal.classList.add('active');
-        }, 10);
+        // 모달 표시 - overlay 먼저 표시
+        overlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+        
+        // 모달 활성화
+        modal.classList.add('active');
 
     } catch (error) {
         console.error('Error showing competition details:', error);
@@ -1359,24 +1544,19 @@ async function showCompetitionDetails(competitionId) {
             </div>
         `;
         
-        overlay.style.display = 'flex';
+        overlay.classList.add('active');
+        modal.classList.add('active');
     }
 }
 
-// 모달 닫기
+// 모달 닫기 함수 수정
 function closeCompetitionModal() {
     const modal = document.getElementById('competitions-modal');
     const overlay = document.getElementById('competitions-modal-overlay');
     
     modal.classList.remove('active');
-    
-    // body 스크롤 복원
+    overlay.classList.remove('active');
     document.body.style.overflow = '';
-    document.body.style.paddingRight = '';
-    
-    setTimeout(() => {
-        overlay.style.display = 'none';
-    }, 300);
 }
 
 // 필터링 함수
@@ -1744,3 +1924,16 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
+
+
+

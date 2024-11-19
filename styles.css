@@ -98,9 +98,27 @@ li {
 }
 
 /* 강조 텍스트 */
-.highlight-text {
-    font-family: 'GmarketSansMedium', Arial, sans-serif;
+.highlight {
     color: #D4A373;
+    font-weight: bold;
+    position: relative;
+    display: inline-block;
+}
+
+.highlight::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: #D4A373;
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.highlight:hover::after {
+    transform: scaleX(1);
 }
 
 /* 컨텐츠 레이아웃 */
@@ -125,7 +143,7 @@ li {
 /* 상단 네비게이션 기본 설정 */
 .top-navbar {
     position: fixed;
-    top: 70;
+    top: 0;
     left: 0;
     width: 100%;
     height: 60px;
@@ -133,11 +151,11 @@ li {
     justify-content: center; /* 아이콘들을 가운데 정렬 */
     align-items: center; /* 수직 중앙 정렬 */
     background: transparent; /* 완전히 투명한 배경 */
-    z-index: 100; /* 다른 요소들보다 위에 표시되도록 설정 */
+    z-index: 1000; /* 다른 요소들보다 위에 표시되도록 설정 */
     transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out; /* 부드럽게 나타나고 사라지도록 애니메이션 설정 */
     opacity: 1; /* 기본적으로 보임 */
     visibility: visible; /* 기본적으로 보임 */
-    background-color: rgba(255, 255, 255, 0.9)
+    /* background-color: rgba(255, 255, 255, 0.9) */
 }
 
 /* 네비게이션 링크 스타일 */
@@ -145,7 +163,7 @@ li {
     margin: 0 20px;
     position: relative;
     text-decoration: none;
-    color: #333;
+    color: #c49e9e;
     font-weight: bold;
     transition: color 0.3s ease;
     font-family: Arial, sans-serif;
@@ -166,7 +184,7 @@ li {
     transform: translateX(-50%);
     width: 0;
     height: 3px;
-    background-color: rgb(47, 28, 94);
+    background-color: #D4A373;
     transition: width 0.3s ease;
 }
 
@@ -184,6 +202,7 @@ li {
         height: 50px; /* 모바일에서는 높이 줄임 */
     }
 }
+
 
 
 /* ===========================================================================================================================================  */ 
@@ -213,6 +232,140 @@ li {
 }
 
 /* =========================================
+ * 애니메이션 스타일
+ * ========================================= */
+
+/* 수직 슬라이더 기본 컨테이너 */
+.animation-slider {
+    position: fixed;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* VerticalSlider 관련 CSS 수정 */
+.animation-wrapper {
+    position: relative;
+    width: 100%;
+    height: 500vh; 
+    transform: translateY(0);
+    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+    will-change: transform;
+    z-index: 1;
+}
+
+.animation-section {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    opacity: 0.3;
+    transition: opacity 1s ease;
+    z-index: 1;
+}
+
+.animation-section.active {
+    opacity: 1;
+    z-index: 2;
+}
+
+.animation-progress {
+    position: fixed;
+    right: 30px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 1000;
+}
+
+.modal-backdrop {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.animation-progress-dot {
+    width: 12px;
+    height: 12px;
+    margin: 10px 0;
+    background: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.animation-progress-dot.active {
+    background: #D4A373;
+    transform: scale(1.2);
+}
+
+.animation-progress-dot:hover {
+    background: rgba(212, 163, 115, 0.8);
+}
+
+/* 섹션 전환 효과 */
+.animation-fade-in {
+    animation: fadeIn 1s ease forwards;
+}
+
+.animation-slide-up {
+    animation: slideUp 1s ease forwards;
+}
+
+/* 애니메이션 키프레임 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes slideUp {
+    from {
+        transform: translateY(50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+/* 스크롤 방지 클래스 */
+.animation-no-scroll {
+    overflow: hidden !important;
+}
+
+/* 3D 효과를 위한 퍼스펙티브 */
+.animation-wrapper {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+/* 섹션 전환시 3D 회전 효과 */
+.animation-section {
+    transform-origin: center;
+    transition: transform 1s cubic-bezier(0.645, 0.045, 0.355, 1),
+                opacity 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+.animation-section.previous {
+    transform: rotateX(5deg) translateY(-30px);
+}
+
+.animation-section.next {
+    transform: rotateX(-5deg) translateY(30px);
+}
+
+
+/* styles.css 수정 */
+.modal-backdrop {
+    display: none; /* 기본적으로 숨김 처리 */
+}
+
+/* =========================================
  * 홈,home 섹션 기본 스타일
  * ========================================= */
 
@@ -223,10 +376,13 @@ li {
     display: flex;
     align-items: center;
     justify-content: center;
-    background-color: #0F1624;
+    /* background-color: #0F1624; */
     overflow: hidden;
     text-align: center;
     padding: 2rem;
+    background-image: url('images/home/plasma.png');
+    background-size: cover;
+    background-position: center;
 }
 
 /* 배경 오버레이 */
@@ -254,24 +410,28 @@ li {
 
 /* 타이핑 텍스트 스타일 */
 .typing-text {
-    min-height: 1.5em;
-    margin: 1rem 0;
-    font-size: 1.5rem;
-    color: #E5E7EB;
+    font-size: 20px;
+    font-family: 'GmarketSansMedium', sans-serif !important;
+    color: #ffffff;
+    display: inline-block; /* 커서와 같은 줄에 표시 */
     position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    height: 1.1em; /* 텍스트 높이 고정 */
 }
 
-/* 타이핑 커서 애니메이션 */
 .typing-text::after {
     content: '|';
     position: absolute;
-    animation: blink 1s infinite;
+    right: 0;
+    animation: blink 1s step-end infinite;
 }
 
 @keyframes blink {
     0%, 100% { opacity: 1; }
     50% { opacity: 0; }
 }
+
 
 /* 하이라이트 텍스트 */
 .typing-text .highlight {
@@ -280,6 +440,58 @@ li {
     transition: opacity 0.3s ease;
 }
 
+/* 흐르는 텍스트 효과 컨테이너 */
+.flowing-text {
+    font-size: 24px;
+    color: #1fa481;
+    display: inline-block;
+    position: relative;
+    font-family: 'GmarketSansMedium', sans-serif;
+    overflow: hidden;
+}
+
+/* 각 문자에 대한 기본 스타일 */
+.flowing-char {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(20px);
+    filter: blur(10px);
+    transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* 활성화된 문자 스타일 */
+.flowing-char.active {
+    opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
+}
+
+/* 글로우 효과 */
+.flowing-char.active {
+    text-shadow: 0 0 10px rgba(31, 164, 129, 0.3);
+}
+
+/* 하이라이트된 문자 스타일 */
+.flowing-char.highlight {
+    color: #D4A373;
+    font-weight: bold;
+}
+
+/* 물결 효과 */
+@keyframes wave {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-3px);
+    }
+}
+
+/* 호버 효과 */
+.flowing-text:hover .flowing-char.active {
+    animation: wave 1s ease infinite;
+    animation-delay: calc(var(--char-index) * 0.1s);
+}
 
 /* =========================================
  * SNS 아이콘 스타일
@@ -1332,7 +1544,8 @@ aside > p:first-of-type::before {
 .worked-modal-content {
     position: relative;
     /* background: rgba(31, 41, 55, 0.95); */
-    background-image: url('images/background/switzerland.jpg');
+    /* background-image: url('images/background/switzerland.jpg'); */
+    background-color: #0F1624;
     background-size: cover;
     background-position: center;
     border-radius: 20px;
@@ -1633,11 +1846,12 @@ aside > p:first-of-type::before {
     margin: 0;
 }
 
+/* 모달 닫기 버튼 개선 */
 .worked-business-close {
     position: absolute;
     right: 3rem;
     top: 3rem;
-    transform: translateY(-50%);
+    transform: translateY(-50%);  /* 기본 위치 조정 */
     color: rgb(212, 163, 115);
     width: 40px;
     height: 40px;
@@ -1650,17 +1864,15 @@ aside > p:first-of-type::before {
     font-weight: 300;
     line-height: 1;
     background: transparent;
-    border-width: 2px;
-    border-style: solid;
-    border-color: rgba(212, 163, 115, 0.3);
-    border-image: initial;
+    border: 2px solid rgba(212, 163, 115, 0.3);
     border-radius: 50%;
-    transition: 0.3s;
+    transition: all 0.3s ease;  /* transition 속성 통합 */
 }
 
 .worked-business-close:hover {
     background: rgba(212, 163, 115, 0.1);
     border-color: rgba(212, 163, 115, 0.6);
+    transform: translateY(-50%) rotate(90deg);  /* 두 transform 효과 결합 */
 }
 
 /* 반응형 디자인 */
@@ -2639,7 +2851,7 @@ aside > p:first-of-type::before {
 /* 네비게이션 버튼 */
 .side-project__nav {
     position: absolute;
-    top: 65%;  
+    top: 50%;  
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
@@ -2830,19 +3042,33 @@ aside > p:first-of-type::before {
     margin: 0;
 }
 
+
 .slide-layer__close {
-    background: none;
-    border: none;
-    color: #fff;
-    font-size: 2rem;
+    position: absolute;
+    right: 3rem;
+    top: 3rem;
+    transform: translateY(-50%);  /* 기본 위치 조정 */
+    color: rgb(212, 163, 115);
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 0.5rem;
+    z-index: 1100;
+    font-size: 24px;
+    font-weight: 300;
     line-height: 1;
-    transition: opacity 0.2s ease;
+    background: transparent;
+    border: 2px solid rgba(212, 163, 115, 0.3);
+    border-radius: 50%;
+    transition: all 0.3s ease;  /* transition 속성 통합 */
 }
 
 .slide-layer__close:hover {
-    opacity: 0.8;
+    background: rgba(212, 163, 115, 0.1);
+    border-color: rgba(212, 163, 115, 0.6);
+    transform: translateY(-50%) rotate(90deg);  /* 두 transform 효과 결합 */
 }
 
 /* 모바일 최적화 */
@@ -2994,3 +3220,16 @@ aside > p:first-of-type::before {
         height: auto;
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
