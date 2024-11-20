@@ -2090,21 +2090,32 @@ aside > p:first-of-type::before {
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 1rem;
+    table-layout: fixed;
 }
 
+/* 테이블 헤더 */
 .competitions-table th {
     padding: 1.2rem 1rem;
     font-size: 1rem;
     text-align: center;
     color: #D4A373;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    position: sticky; /* 헤더 고정 */
+    top: 0;
+    background: inherit; /* 배경색 유지 */
+    z-index: 1;
 }
 
+/* 테이블 셀 */
 .competitions-table td {
     padding: 1.2rem 1rem;
     text-align: center;
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     color: rgba(255, 255, 255, 0.8);
+    overflow: hidden;
+    text-overflow: ellipsis; /* 긴 텍스트 처리 */
+    white-space: nowrap;
 }
 
 .competitions-table tr:hover {
@@ -2112,9 +2123,26 @@ aside > p:first-of-type::before {
 }
 
 
-.competitions-table th:nth-child(2),  /* 기간 열 헤더 */
-.competitions-table td:nth-child(2) { /* 기간 열 데이터 */
+/* 기간 열 정렬 */
+.competitions-table th:nth-child(2),
+.competitions-table td:nth-child(2) {
     text-align: left;
+}
+
+
+/* 스크롤바 스타일링 */
+.competitions-list::-webkit-scrollbar {
+    height: 8px;
+}
+
+.competitions-list::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+}
+
+.competitions-list::-webkit-scrollbar-thumb {
+    background: rgba(212, 163, 115, 0.5);
+    border-radius: 4px;
 }
 
 
@@ -2399,50 +2427,47 @@ aside > p:first-of-type::before {
 @media screen and (max-width: 1200px) {
     .competitions-container {
         flex-direction: column;
+        padding: 0 1rem;
     }
 
     .competitions-highlight-card {
         position: static;
         width: 100%;
         max-width: none;
-    }
-
-    .competitions-table th,
-    .competitions-table td {
-        padding: 1rem;
+        margin-bottom: 2rem;
     }
 }
 
 @media screen and (max-width: 768px) {
     .competitions-section {
-        padding: 4rem 0;
+        padding: 2rem 0;
     }
 
     .competitions-wrapper {
-        padding: 0 1rem;
+        padding: 0 0.5rem;
     }
 
     .competitions-title {
-        font-size: 2rem;
+        font-size: 1.75rem;
+        margin-bottom: 1.5rem;
     }
 
     .competitions-list {
-        padding: 1.5rem;
-        overflow-x: auto;
-    }
-
-    .competitions-table {
-        font-size: 0.9rem;
+        padding: 1rem;
+        margin: -0.5rem;
+        width: calc(100% + 1rem);
     }
 
     .competitions-controls {
-        overflow-x: auto;
-        padding-bottom: 0.5rem;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        padding: 0.5rem;
     }
-    
+
     .competitions-modal {
-        width: 95%;
+        width: calc(100% - 2rem);
         margin: 1rem;
+        max-height: 90vh;
     }
 }
 
@@ -2664,7 +2689,7 @@ aside > p:first-of-type::before {
 /* 사이드 프로젝트 섹션 기본 스타일 */
 .side-project {
     position: relative;
-    background: url('images/background/sky.jpg') no-repeat center center;
+    background: url('images/home/plasma.png') no-repeat center center;
     background-size: cover;
     min-height: 100vh;
     padding: 4rem 0;

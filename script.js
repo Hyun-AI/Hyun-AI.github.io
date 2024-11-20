@@ -767,6 +767,12 @@ class CareerSliderState {
         this.isAnimating = false;
     }
 
+    // 특정 인덱스로 이동
+    goToIndex(index) {
+        if (this.isAnimating || index === this.currentIndex) return;
+        this.currentIndex = index;
+    }
+
     // 다음 슬라이드 인덱스 계산
     getNextIndex() {
         return (this.currentIndex + 1) % this.items.length;
@@ -776,12 +782,57 @@ class CareerSliderState {
     getPrevIndex() {
         return (this.currentIndex - 1 + this.items.length) % this.items.length;
     }
+}
 
-    // 특정 인덱스로 이동
-    goToIndex(index) {
-        if (this.isAnimating || index === this.currentIndex) return;
-        this.currentIndex = index;
-    }
+// 이벤트 리스너 설정
+function setupEventListeners(state, dom) {
+    // 네비게이션 버튼 이벤트
+    dom.prevBtn.addEventListener('click', () => {
+        if (!state.isAnimating) {
+            state.goToIndex(state.getPrevIndex());
+            updateCardPositions(state, dom);
+        }
+    });
+    
+    dom.nextBtn.addEventListener('click', () => {
+        if (!state.isAnimating) {
+            state.goToIndex(state.getNextIndex());
+            updateCardPositions(state, dom);
+        }
+    });
+    
+    // 모달 닫기 버튼 이벤트
+    const modalCloseBtn = dom.modal.querySelector('.worked-modal-close');
+    modalCloseBtn.addEventListener('click', () => closeModal(dom.modal));
+    
+    // 사업계획서 토글 버튼 이벤트
+    dom.businessToggle.addEventListener('click', () => {
+        dom.businessPanel.classList.add('active');
+        loadBusinessPlans(state, dom);
+    });
+    
+    // 사업계획서 패널 닫기 버튼 이벤트
+    const businessCloseBtn = dom.businessPanel.querySelector('.worked-business-close');
+    businessCloseBtn.addEventListener('click', () => {
+        dom.businessPanel.classList.remove('active');
+    });
+    
+    // 카드 클릭 이벤트
+    dom.slider.addEventListener('click', (e) => {
+        const card = e.target.closest('.worked-card');
+        if (card) {
+            handleCardClick(card, state, dom);
+        }
+    });
+    
+    // 드래그 및 터치 이벤트 설정
+    setupDragFunctionality(state, dom);
+    setupTouchFunctionality(state, dom);
+    
+    // 윈도우 리사이즈 이벤트
+    window.addEventListener('resize', () => {
+        updateCardPositions(state, dom);
+    });
 }
 
 // DOM 요소 참조
@@ -843,14 +894,16 @@ function createCard(item) {
 // 슬라이더 애니메이션 관련 함수들
 
 // 카드 위치 업데이트
+// 카드 위치 업데이트
 function updateCardPositions(state, dom) {
+    if (state.isAnimating) return;
+    state.isAnimating = true;
+    
     const cards = dom.slider.querySelectorAll('.worked-card');
     
     cards.forEach((card, index) => {
-        // 모든 클래스 제거
         card.classList.remove('active', 'prev', 'next');
         
-        // 새로운 위치에 따른 클래스 추가
         if (index === state.currentIndex) {
             card.classList.add('active');
         } else if (index === state.getPrevIndex()) {
@@ -862,6 +915,11 @@ function updateCardPositions(state, dom) {
 
     // 페이지네이션 업데이트
     updatePagination(state, dom);
+
+    // 애니메이션 완료 후 상태 초기화
+    setTimeout(() => {
+        state.isAnimating = false;
+    }, 600); // 애니메이션 지속 시간과 동일하게 설정
 }
 
 // 슬라이드 전환 애니메이션
@@ -914,22 +972,17 @@ function handleCardClick(card, state, dom) {
     if (project) {
         const index = state.items.findIndex(item => item.id === projectId);
         
-        // 클릭한 카드가 active가 아니면 해당 카드로 이동 후 모달 표시
+        // 클릭한 카드가 active가 아닌 경우 해당 카드로만 이동
         if (!card.classList.contains('active')) {
-            // 카드 이동 애니메이션
             state.goToIndex(index);
             updateCardPositions(state, dom);
-            
-            // 애니메이션이 완료된 후 모달 표시
-            setTimeout(() => {
-                loadProjectDetails(project, dom);
-            }, 600); // 카드 이동 애니메이션 시간과 동일하게 설정
         } else {
-            // active 카드면 바로 모달 표시
+            // active 카드(가운데 카드)를 클릭했을 때만 모달 표시
             loadProjectDetails(project, dom);
         }
     }
 }
+
 
 // 드래그 기능
 function setupDragFunctionality(state, dom) {
@@ -1658,6 +1711,7 @@ document.addEventListener('click', function(event) {
 // side-project
 // ============================================================================================================================
 // 프로젝트 설정
+// 프로젝트 설정
 const sideProjectData = {
     'db-관리자': {
         title: 'DB 관리자 도구',
@@ -1694,175 +1748,75 @@ const sideProjectData = {
     }
 };
 
-document.addEventListener('DOMContentLoaded', function() {
-    // ProjectSlider 클래스 정의
-    class ProjectSlider {
-        constructor() {
-            this.container = document.querySelector('.side-project__slider-container');
-            this.cards = Array.from(document.querySelectorAll('.side-project__card'));
-            this.currentIndex = 0;
-            this.totalSlides = this.cards.length;
-            
-            this.prevBtn = document.querySelector('.side-project__nav--prev');
-            this.nextBtn = document.querySelector('.side-project__nav--next');
-            
-            this.init();
+// 마크다운 파일 로드 함수
+async function loadMarkdownFile(filePath) {
+    try {
+        const response = await fetch(filePath);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
         }
-    
-        init() {
-            this.updateSlides();
-            this.bindEvents();
-        }
+        return await response.text();
+    } catch (error) {
+        console.error('마크다운 파일 로드 에러:', error);
+        throw error;
+    }
+}
 
-        updateDescription(index) {
-            const project = sideProjectData[this.cards[index].getAttribute('project')];
-            const infoSection = document.querySelector('.side-project__info');
-            
-            if (!project) return;
+class ProjectSlider {
+    constructor() {
+        this.container = document.querySelector('.side-project__slider-container');
+        this.cards = Array.from(document.querySelectorAll('.side-project__card'));
+        this.currentIndex = 0;
+        this.totalSlides = this.cards.length;
+        this.isAnimating = false;
+        
+        this.prevBtn = document.querySelector('.side-project__nav--prev');
+        this.nextBtn = document.querySelector('.side-project__nav--next');
+        
+        this.init();
+    }
 
-            infoSection.innerHTML = `
-                <div class="side-project__header">
-                    ${project.headerText}
-                </div>
-                <h2 class="side-project__title">
-                    ${project.title}
-                </h2>
-                <p class="side-project__description">
-                    ${project.mainDescription}
-                </p>
-                <div class="side-project__tags">
-                    ${project.tags.map(tag => `
-                        <span class="side-project__tag">${tag}</span>
-                    `).join('')}
-                </div>
-            `;
+    init() {
+        this.updateSlides();
+        this.bindEvents();
+    }
+
+    handleCardClick(card) {
+        const clickedIndex = this.cards.indexOf(card);
+        
+        // 클릭된 카드가 현재 활성화된 카드가 아닌 경우
+        if (clickedIndex !== this.currentIndex) {
+            this.navigateToCard(clickedIndex);
+            return;
         }
-    
-        updateSlides() {
-            this.cards.forEach((card, index) => {
-                card.classList.remove('active', 'prev', 'next');
-                
-                if (index === this.currentIndex) {
-                    card.classList.add('active');
-                    this.updateDescription(index);
-                    this.animateCardContent(card, true);
-                } else if (index === this.getPrevIndex()) {
-                    card.classList.add('prev');
-                    this.animateCardContent(card, false);
-                } else if (index === this.getNextIndex()) {
-                    card.classList.add('next');
-                    this.animateCardContent(card, false);
-                }
-            });
-        }
-    
-        animateCardContent(card, isActive) {
-            const overlay = card.querySelector('.side-project__card-overlay');
-            const content = card.querySelector('.side-project__card-content');
-            
-            if (isActive) {
-                overlay.style.opacity = '1';
-                overlay.style.transform = 'translateY(0)';
-                content.style.opacity = '1';
-                content.style.transform = 'translateY(0)';
-            } else {
-                overlay.style.opacity = '1';
-                overlay.style.transform = 'translateY(0)';
-                content.style.opacity = '1';
-                content.style.transform = 'translateY(0)';
+        
+        // 현재 활성화된 (가운데 있는) 카드를 클릭한 경우에만 모달 열기
+        if (clickedIndex === this.currentIndex) {
+            const projectId = card.getAttribute('project');
+            if (projectId) {
+                this.showProjectDetail(projectId);
             }
-        }
-    
-        prevSlide() {
-            this.currentIndex = this.getPrevIndex();
-            this.updateSlides();
-        }
-    
-        nextSlide() {
-            this.currentIndex = this.getNextIndex();
-            this.updateSlides();
-        }
-    
-        getPrevIndex() {
-            return (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
-        }
-    
-        getNextIndex() {
-            return (this.currentIndex + 1) % this.totalSlides;
-        }
-    
-        bindEvents() {
-            if (this.prevBtn) {
-                this.prevBtn.addEventListener('click', () => {
-                    this.prevSlide();
-                });
-            }
-            
-            if (this.nextBtn) {
-                this.nextBtn.addEventListener('click', () => {
-                    this.nextSlide();
-                });
-            }
-    
-            let touchStartX = 0;
-            let touchEndX = 0;
-    
-            this.container.addEventListener('touchstart', (e) => {
-                touchStartX = e.touches[0].clientX;
-            }, { passive: true });
-    
-            this.container.addEventListener('touchend', (e) => {
-                touchEndX = e.changedTouches[0].clientX;
-                const diff = touchStartX - touchEndX;
-    
-                if (Math.abs(diff) > 50) {
-                    if (diff > 0) {
-                        this.nextSlide();
-                    } else {
-                        this.prevSlide();
-                    }
-                }
-            }, { passive: true });
         }
     }
 
-    const slider = new ProjectSlider();
+    navigateToCard(targetIndex) {
+        if (this.isAnimating) return;
+        this.isAnimating = true;
 
-    const slideLayer = document.querySelector('.project-slide-layer');
-    const slideTitle = slideLayer.querySelector('.slide-layer__title');
-    const slideBody = slideLayer.querySelector('.slide-layer__body');
-    const closeButton = slideLayer.querySelector('.slide-layer__close');
-    const projectCards = document.querySelectorAll('.side-project__card');
- 
-    async function loadMarkdownFile(filePath) {
-        try {
-            const response = await fetch(filePath);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            return await response.text();
-        } catch (error) {
-            console.error('마크다운 파일 로드 에러:', error);
-            throw error;
-        }
+        this.currentIndex = targetIndex;
+        this.updateSlides();
+
+        // 애니메이션 완료 후 상태 초기화
+        setTimeout(() => {
+            this.isAnimating = false;
+        }, 600); // 트랜지션 시간과 동일하게 설정
     }
 
-    function handleImages() {
-        const images = slideBody.querySelectorAll('img');
-        images.forEach(img => {
-            img.addEventListener('load', () => {
-                img.classList.add('loaded');
-            });
-
-            img.addEventListener('error', () => {
-                img.parentElement.innerHTML = `
-                    <div class="image-error">이미지를 불러올 수 없습니다</div>
-                `;
-            });
-        });
-    }
-
-    async function showProjectDetail(projectId) {
+    async showProjectDetail(projectId) {
+        const slideLayer = document.querySelector('.project-slide-layer');
+        const slideTitle = slideLayer.querySelector('.slide-layer__title');
+        const slideBody = slideLayer.querySelector('.slide-layer__body');
+        
         try {
             const project = sideProjectData[projectId];
             if (!project) {
@@ -1879,7 +1833,7 @@ document.addEventListener('DOMContentLoaded', function() {
             const parsedContent = marked.parse(markdownContent);
             
             slideBody.innerHTML = parsedContent;
-            handleImages();
+            this.handleImages(slideBody);
 
         } catch (error) {
             console.error('프로젝트 로드 에러:', error);
@@ -1892,48 +1846,172 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function closeSlideLayer() {
-        slideLayer.classList.remove('is-visible');
-        document.body.style.overflow = '';
-        setTimeout(() => {
-            slideBody.innerHTML = '';
-        }, 300);
+    handleImages(container) {
+        const images = container.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('load', () => {
+                img.classList.add('loaded');
+            });
+
+            img.addEventListener('error', () => {
+                img.parentElement.innerHTML = `
+                    <div class="image-error">이미지를 불러올 수 없습니다</div>
+                `;
+            });
+        });
     }
 
-    projectCards.forEach(card => {
+    updateSlides() {
+        this.cards.forEach((card, index) => {
+            card.classList.remove('active', 'prev', 'next');
+            
+            if (index === this.currentIndex) {
+                card.classList.add('active');
+                this.updateDescription(index);
+            } else if (index === this.getPrevIndex()) {
+                card.classList.add('prev');
+            } else if (index === this.getNextIndex()) {
+                card.classList.add('next');
+            }
+        });
+    }
+
+    updateDescription(index) {
+        const project = sideProjectData[this.cards[index].getAttribute('project')];
+        const infoSection = document.querySelector('.side-project__info');
+        
+        if (!project) return;
+
+        infoSection.innerHTML = `
+            <div class="side-project__header">
+                ${project.headerText}
+            </div>
+            <h2 class="side-project__title">
+                ${project.title}
+            </h2>
+            <p class="side-project__description">
+                ${project.mainDescription}
+            </p>
+            <div class="side-project__tags">
+                ${project.tags.map(tag => `
+                    <span class="side-project__tag">${tag}</span>
+                `).join('')}
+            </div>
+        `;
+    }
+
+    bindEvents() {
+        // 카드 클릭 이벤트
+        this.cards.forEach(card => {
+            card.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleCardClick(card);
+            });
+        });
+
+        // 이전/다음 버튼 이벤트
+        if (this.prevBtn) {
+            this.prevBtn.addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.navigateToCard(this.getPrevIndex());
+                }
+            });
+        }
+        
+        if (this.nextBtn) {
+            this.nextBtn.addEventListener('click', () => {
+                if (!this.isAnimating) {
+                    this.navigateToCard(this.getNextIndex());
+                }
+            });
+        }
+
+        // 터치 이벤트
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        this.container.addEventListener('touchstart', (e) => {
+            touchStartX = e.touches[0].clientX;
+        }, { passive: true });
+
+        this.container.addEventListener('touchend', (e) => {
+            if (this.isAnimating) return;
+            
+            touchEndX = e.changedTouches[0].clientX;
+            const diff = touchStartX - touchEndX;
+
+            if (Math.abs(diff) > 50) {
+                if (diff > 0) {
+                    this.navigateToCard(this.getNextIndex());
+                } else {
+                    this.navigateToCard(this.getPrevIndex());
+                }
+            }
+        }, { passive: true });
+    }
+
+    getPrevIndex() {
+        return (this.currentIndex - 1 + this.totalSlides) % this.totalSlides;
+    }
+
+    getNextIndex() {
+        return (this.currentIndex + 1) % this.totalSlides;
+    }
+}
+
+// 모달 닫기 함수
+function closeSlideLayer() {
+    const slideLayer = document.querySelector('.project-slide-layer');
+    slideLayer.classList.remove('is-visible');
+    document.body.style.overflow = '';
+    setTimeout(() => {
+        slideLayer.querySelector('.slide-layer__body').innerHTML = '';
+    }, 300);
+}
+
+// 초기화 및 이벤트 설정
+document.addEventListener('DOMContentLoaded', function() {
+    const slider = new ProjectSlider();
+    window.projectSlider = slider;
+
+    // 외부 카드 클릭 이벤트 처리
+    const externalProjectCards = document.querySelectorAll('[data-project]');
+    externalProjectCards.forEach(card => {
         card.addEventListener('click', (e) => {
             e.preventDefault();
-            const projectId = card.getAttribute('project');
-            if (projectId) {
-                showProjectDetail(projectId);
+            const projectId = card.dataset.project;
+            if (projectId && window.projectSlider) {
+                // 먼저 해당 카드로 이동
+                const targetIndex = slider.cards.findIndex(c => 
+                    c.getAttribute('project') === projectId
+                );
+                if (targetIndex !== -1) {
+                    slider.navigateToCard(targetIndex);
+                }
             }
         });
     });
-    
-    closeButton.addEventListener('click', closeSlideLayer);
-    
-    slideLayer.addEventListener('click', (e) => {
-        if (e.target === slideLayer) {
-            closeSlideLayer();
-        }
-    });
-    
+
+    // 모달 닫기 버튼 이벤트
+    const closeButton = document.querySelector('.slide-layer__close');
+    if (closeButton) {
+        closeButton.addEventListener('click', closeSlideLayer);
+    }
+
+    // 모달 외부 클릭 시 닫기
+    const slideLayer = document.querySelector('.project-slide-layer');
+    if (slideLayer) {
+        slideLayer.addEventListener('click', (e) => {
+            if (e.target === slideLayer) {
+                closeSlideLayer();
+            }
+        });
+    }
+
+    // ESC 키로 모달 닫기
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && slideLayer.classList.contains('is-visible')) {
+        if (e.key === 'Escape' && document.querySelector('.project-slide-layer.is-visible')) {
             closeSlideLayer();
         }
     });
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
