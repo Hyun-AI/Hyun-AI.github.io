@@ -44,6 +44,17 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+
+html {
+    
+    text-size-adjust: none;
+    -webkit-text-size-adjust: none;
+    -moz-text-size-adjust: none;
+    -ms-text-size-adjust: none;
 }
 
 /* body 기본 설정 */
@@ -55,7 +66,8 @@ body {
     background-color: #0F1624;
     color: #fff;
     font-family: 'GmarketSansMedium', Arial, sans-serif;
-    overflow-x: hidden;
+    min-width: 1440px; /* 최소 너비 설정 */
+    overflow-x: auto; /* 화면이 작아져도 스크롤로 전체 내용 확인 가능 */
 }
 
 /* 제목 스타일 */
@@ -1019,7 +1031,7 @@ aside > p:first-of-type::before {
     position: relative;
     height: 100vh;  /* 100vh로 수정 */
     padding: 0;     /* 패딩 제거 */
-    background-image: url('images/background/sky.jpg');
+    background-image: url('images/home/plasma.png');
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -1295,7 +1307,7 @@ aside > p:first-of-type::before {
 .worked-container {
     position: relative;
     height: 100vh;
-    background-image: url('images/background/sky.jpg');
+    background-image: url('images/home/plasma.png');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -1326,7 +1338,7 @@ aside > p:first-of-type::before {
 /* 헤더 스타일 */
 .worked-header {
     text-align: center;
-    margin-bottom: 3rem;
+    margin-bottom: 2rem;
 }
 
 .worked-title {
@@ -1346,8 +1358,8 @@ aside > p:first-of-type::before {
     perspective: 1000px;
     margin: 0 auto;
     max-width: 1400px;
-    height: 500px; /* 높이 조정 */
-    margin-bottom: 60px; /* 페이지네이션을 위한 하단 여백 추가 */
+    height: 650px; /* 높이 조정 */
+    margin-bottom: 30px; /* 페이지네이션을 위한 하단 여백 추가 */
 }
 
 
@@ -1363,6 +1375,9 @@ aside > p:first-of-type::before {
 .worked-card {
     position: absolute;
     width: 350px;
+    height: auto;
+    min-height: 450px;  /* 최소 높이 설정 */
+    max-height: 550px;  /* 최대 높이 제한 */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -1370,6 +1385,7 @@ aside > p:first-of-type::before {
     opacity: 0;
     transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: pointer; /* 커서 스타일 추가 */
+    overflow: hidden;
 }
 
 .worked-card.active {
@@ -1396,9 +1412,10 @@ aside > p:first-of-type::before {
 /* 카드 이미지 스타일 */
 .worked-card-image {
     width: 100%;
-    height: 180px; /* 이미지 높이 조정 */
+    height: 200px; /* 이미지 높이 조정 */
     object-fit: cover;
     border-radius: 20px 20px 0 0;
+    flex: 0 0 auto;
 }
 
 /* 카드 내용 스타일 */
@@ -1406,10 +1423,15 @@ aside > p:first-of-type::before {
     margin-bottom: 1.5rem;
 }
 
+/* 카드 콘텐츠 영역 높이 조정 */
 .worked-card-content {
     padding: 1.5rem;
     background: rgba(255, 255, 255, 0.05);
+    height: calc(100% - 200px); /* 이미지 높이를 제외한 나머지 */
+    display: flex;
+    flex-direction: column;
 }
+
 
 .worked-card-title {
     font-size: 1.1rem;
@@ -1419,36 +1441,50 @@ aside > p:first-of-type::before {
 
 .worked-card-period {
     font-size: 0.9rem;
-    color: rgba(255, 255, 255, 0.6);
+    color: rgb(255, 255, 255);
     margin-bottom: 1rem;
 }
 
 .worked-card-description {
     color: rgba(255, 255, 255, 0.8);
     line-height: 1.6;
-    margin-bottom: 1.5rem;
-    font-size: 0.9rem;
+    margin-bottom: 1rem;  /* 마진 줄임 */
+    font-size: 1rem;
+    flex: 0 1 auto;  /* flex-grow: 0으로 변경 */
 }
 
+
+/* 태그 컨테이너 수정 */
 .worked-card-tags {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
-    font-size: 0.3rem !important;   
+    margin-top: auto;  /* 자동 마진으로 하단 배치 */
+    padding-top: 1rem;  /* 위쪽 여백 추가 */
+    visibility: visible;  /* 태그 보이게 설정 */
+    width: 100%;
 }
-
 
 .worked-tag {
     padding: 0.4rem 1rem;
-    background: rgba(85, 218, 214, 0.1);
+    background: rgba(227, 27, 181, 0.1);
     border-radius: 20px;
-    font-size: 0.3rem !important;
+    font-size: 0.8rem;
     color: #fff;
+    display: inline-flex; /* inline-flex로 변경 */
+    align-items: center; /* 수직 중앙 정렬 */
+    white-space: nowrap; /* 텍스트 줄바꿈 방지 */
+    visibility: visible;
+    max-width: 100%; /* 최대 너비 설정 */
+    overflow: hidden; /* 넘치는 내용 숨김 */
+    text-overflow: ellipsis; /* 말줄임표 추가 */
 }
 
+
+/* 하이라이트 태그 */
 .worked-tag.highlight {
-    background: rgba(212, 163, 115, 0.2);
-    color: #D4A373;
+    background: rgba(224, 71, 41, 0.2);
+    visibility: visible;  /* 태그 보이게 설정 */
 }
 
 
@@ -1563,6 +1599,21 @@ aside > p:first-of-type::before {
 /* Webkit 브라우저용 스크롤바 숨기기 */
 .worked-modal-content::-webkit-scrollbar {
     display: none;
+}
+
+/* 반응형 디자인 추가 */
+@media screen and (max-height: 800px) {
+    .worked-card {
+        height: 450px; /* 화면 높이가 작을 때는 카드 높이를 더 줄임 */
+    }
+    
+    .worked-card-image {
+        height: 160px;
+    }
+    
+    .worked-card-content {
+        padding: 1.2rem;
+    }
 }
 
 /* 반응형 처리 */
@@ -1907,12 +1958,13 @@ aside > p:first-of-type::before {
 .competitions-section {
     position: relative;
     min-height: 100vh;
-    background-image: url('images/background/sky.jpg');
+    background-image: url('images/home/plasma.png');
     background-size: cover;
     background-position: center;
     display: flex;
     align-items: center;
     padding: 6rem 0;
+    height: auto;
 }
 
 .competitions-section::before {
@@ -2038,6 +2090,7 @@ aside > p:first-of-type::before {
     padding: 2rem;
     /* min-width: auto; 테이블 오버플로우 방지 */
     overflow-x: auto; /* 가로 스크롤 추가 */
+    z-index: 1;
 }
 
 /* 필터 컨트롤 */
@@ -2091,6 +2144,7 @@ aside > p:first-of-type::before {
     border-spacing: 0;
     margin-top: 1rem;
     table-layout: fixed;
+    z-index: 1;
 }
 
 /* 테이블 헤더 */
@@ -2475,6 +2529,7 @@ aside > p:first-of-type::before {
 .video-container {
     position: relative;
     display: inline-block;
+    z-index: 1;
 }
 
 .video-btn {
@@ -2493,27 +2548,45 @@ aside > p:first-of-type::before {
 
 .video-links {
     display: none;
-    position: absolute;
+    position: relative;
     left: 50%;
+    top: 100%;
     transform: translateX(-50%);
-    background: white;
-    border-radius: 4px;
-    padding: 4px 0;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    background: rgba(20, 20, 30, 0.95); /* 어두운 반투명 배경으로 변경하여 조화롭게 */
+    border-radius: 16px; /* 적당히 둥글게 설정 */
+    padding: 8px 0; /* 패딩을 살짝 늘려서 보기 좋게 */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3); /* 더 깊은 그림자 효과로 부드럽게 */
     z-index: 1000;
+    min-width: 120px; /* 최소 너비 살짝 넓게 설정 */
 }
 
 .video-link {
     display: block;
-    padding: 6px 16px;
+    padding: 10px 16px; /* 내부 패딩을 넉넉히 하여 클릭 영역 확장 */
     text-decoration: none;
-    color: #333;
-    white-space: nowrap;
-    font-size: 14px;
+    color: #f0f0f0; /* 더 밝은 색상으로 변경하여 명확하게 */
+    background: linear-gradient(45deg, #2f2f3f, #3a3a50); /* 차분한 그라데이션 배경 */
+    border-radius: 12px; /* 둥글게 설정 */
+    transition: background 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* 부드러운 전환 효과 추가 */
+    margin: 4px 8px; /* 링크 사이에 여백 추가 */
 }
 
 .video-link:hover {
-    background-color: #f5f5f5;
+    background: linear-gradient(45deg, #5a5a7a, #7a7aa5); /* 호버 시 부드러운 색상 변경 */
+    transform: translateY(-4px); /* 살짝 위로 올라가는 효과 */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* 호버 시 깊이감을 더하는 그림자 효과 */
+}
+
+
+.competitions-video-link {
+    font-size: 1rem;
+    display: inline-block; /* 클릭 가능한 영역을 확대하기 위해 인라인 블록으로 설정 */
+    padding: 8px 12px; /* 내부 여백을 추가해 보기 좋게 만듦 */
+    text-decoration: none; /* 링크의 기본 밑줄 제거 */
+    color: #ffffff; /* 글자 색상을 흰색으로 설정하여 명확하게 표시 */
+    border-radius: 8px; /* 모서리를 살짝 둥글게 처리 */
+    transition: background 0.3s ease, transform 0.3s ease; /* 부드러운 전환 효과 추가 */
+    margin: 4px; /* 다른 요소와 구분되도록 여백 추가 */
 }
 
 
@@ -3254,7 +3327,233 @@ aside > p:first-of-type::before {
 
 
 
+/* 모니터 해상도 별 반응형 디자인 */
 
 
 
+/* 데스크톱 해상도 대응을 위한 미디어쿼리 */
+@media screen and (min-width: 1440px) {
+    /* Career History 섹션 */
+    .worked-wrapper {
+        width: 1400px;
+        margin: 0 auto;
+    }
+    
+    .worked-card {
+        width: 400px;
+        height: 500px;
+    }
+    
+    .worked-slider {
+        height: 600px;
+    }
 
+    .worked-modal-content {
+        width: 1200px;
+        margin: 2rem auto;
+    }
+
+    /* Competitions 섹션 */
+    .competitions-wrapper {
+        width: 1400px;
+        margin: 0 auto;
+    }
+
+    .competitions-container {
+        gap: 2.5rem;
+    }
+
+    .competitions-highlight-card {
+        flex: 0 0 350px;
+    }
+
+    .competitions-list {
+        flex: 1;
+    }
+
+    .competitions-table {
+        width: 900px;
+    }
+
+    /* Side Projects 섹션 */
+    .side-project__wrapper {
+        width: 1400px;
+        margin: 0 auto;
+        gap: 4rem;
+    }
+
+    .side-project__info {
+        flex: 0 0 400px;
+    }
+
+    .side-project__card {
+        width: 350px;
+        height: 450px;
+    }
+
+    .side-project__slider {
+        height: 600px;
+    }
+}
+
+@media screen and (min-width: 1920px) {
+    /* Career History 섹션 */
+    .worked-wrapper {
+        width: 1800px;
+    }
+
+    .worked-card {
+        width: 400px;
+        height: 500px;
+    }
+
+    .worked-slider {
+        height: 700px;
+    }
+
+    .worked-modal-content {
+        width: 1600px;
+    }
+
+    /* Competitions 섹션 */
+    .competitions-wrapper {
+        width: 1800px;
+    }
+
+    .competitions-highlight-card {
+        flex: 0 0 400px;
+    }
+
+    .competitions-table {
+        width: 1200px;
+    }
+
+    /* Side Projects 섹션 */
+    .side-project__wrapper {
+        width: 1800px;
+        gap: 5rem;
+    }
+
+    .side-project__info {
+        flex: 0 0 500px;
+    }
+
+    .side-project__card {
+        width: 400px;
+        height: 500px;
+    }
+
+    .side-project__slider {
+        height: 700px;
+    }
+
+    /* 폰트 크기 조정 */
+    .worked-title,
+    .competitions-title,
+    .side-project__title {
+        font-size: 36px;
+    }
+
+    .worked-subtitle,
+    .competitions-subtitle,
+    .side-project__description {
+        font-size: 18px;
+    }
+}
+
+@media screen and (min-width: 2560px) {
+    /* Career History 섹션 */
+    .worked-wrapper {
+        width: 2200px;
+    }
+
+    .worked-card {
+        width: 450px;
+        height: 600px;
+    }
+
+    .worked-slider {
+        height: 800px;
+    }
+
+    .worked-modal-content {
+        width: 2000px;
+    }
+
+    /* Competitions 섹션 */
+    .competitions-wrapper {
+        width: 2200px;
+    }
+
+    .competitions-highlight-card {
+        flex: 0 0 450px;
+    }
+
+    .competitions-table {
+        width: 1500px;
+    }
+
+    /* Side Projects 섹션 */
+    .side-project__wrapper {
+        width: 2200px;
+        gap: 6rem;
+    }
+
+    .side-project__info {
+        flex: 0 0 600px;
+    }
+
+    .side-project__card {
+        width: 450px;
+        height: 550px;
+    }
+
+    .side-project__slider {
+        height: 800px;
+    }
+
+    /* 폰트 크기 조정 */
+    .worked-title,
+    .competitions-title,
+    .side-project__title {
+        font-size: 42px;
+    }
+
+    .worked-subtitle,
+    .competitions-subtitle,
+    .side-project__description {
+        font-size: 20px;
+    }
+}
+
+/* 애니메이션 관련 미디어쿼리 */
+@media (prefers-reduced-motion: reduce) {
+    /* 기본 애니메이션 제어 */
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    /* Career History 섹션 */
+    .worked-card {
+        transition: none !important;
+    }
+
+    /* Competitions 섹션 */
+    .competitions-highlight-card:hover {
+        transform: none !important;
+    }
+
+    /* Side Projects 섹션 */
+    .side-project__card {
+        transition: none !important;
+    }
+
+    .side-project__card-inner {
+        transition: none !important;
+    }
+}

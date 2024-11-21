@@ -621,7 +621,7 @@ const careerData = {
             title: '신상품 모니터링',
             period: '2023.07 - 2023.11',
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
-            tags: ['PYTHON', 'BIGDATA', 'DeepLearning'],
+            tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
             mdFile: './md/project/monitoring.md',
             image: './images/projects/work2.png'
         },
@@ -630,7 +630,7 @@ const careerData = {
             title: '지식재산서비스 성장지원사업',
             period: '2023년 5월 ~ 2023년 11월',
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
-            tags: ['PYTHON', 'BIGDATA', 'DeepLearning'],
+            tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
             mdFile: './md/project/bm-1.md',
             image: './images/projects/work3.png'
         },
@@ -762,14 +762,22 @@ const careerData = {
 // 슬라이더 상태 관리
 class CareerSliderState {
     constructor() {
+        // 현재 슬라이드 인덱스
         this.currentIndex = 0;
+        // 전체 프로젝트 데이터
         this.items = careerData.projects;
+        // 애니메이션 진행 중 여부
         this.isAnimating = false;
     }
 
     // 특정 인덱스로 이동
     goToIndex(index) {
         if (this.isAnimating || index === this.currentIndex) return;
+        
+        // 범위를 벗어나는 경우 처리
+        if (index < 0) index = this.items.length - 1;
+        if (index >= this.items.length) index = 0;
+        
         this.currentIndex = index;
     }
 
@@ -784,23 +792,45 @@ class CareerSliderState {
     }
 }
 
+
 // 이벤트 리스너 설정
 function setupEventListeners(state, dom) {
-    // 네비게이션 버튼 이벤트
+    // 이전 버튼 클릭 이벤트
     dom.prevBtn.addEventListener('click', () => {
         if (!state.isAnimating) {
+            state.isAnimating = true;
             state.goToIndex(state.getPrevIndex());
             updateCardPositions(state, dom);
+            
+            // 애니메이션 완료 후 상태 초기화
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 600); // 600ms는 트랜지션 시간과 일치
         }
     });
-    
+
+    // 다음 버튼 클릭 이벤트
     dom.nextBtn.addEventListener('click', () => {
         if (!state.isAnimating) {
+            state.isAnimating = true;
             state.goToIndex(state.getNextIndex());
             updateCardPositions(state, dom);
+            
+            // 애니메이션 완료 후 상태 초기화
+            setTimeout(() => {
+                state.isAnimating = false;
+            }, 600);
         }
     });
-    
+
+    // 카드 클릭 이벤트
+    dom.slider.addEventListener('click', (e) => {
+        const card = e.target.closest('.worked-card');
+        if (card) {
+            handleCardClick(card, state, dom);
+        }
+    });
+
     // 모달 닫기 버튼 이벤트
     const modalCloseBtn = dom.modal.querySelector('.worked-modal-close');
     modalCloseBtn.addEventListener('click', () => closeModal(dom.modal));
@@ -838,11 +868,13 @@ function setupEventListeners(state, dom) {
 // DOM 요소 참조
 class CareerDOMReferences {
     constructor() {
+        // 필요한 DOM 요소들을 찾아서 저장
         this.container = document.querySelector('.worked-container');
         this.slider = document.querySelector('.worked-slider-container');
         this.pagination = document.querySelector('.worked-pagination');
-        this.prevBtn = document.querySelector('.worked-prev');
-        this.nextBtn = document.querySelector('.worked-next');
+        // 이전/다음 버튼 요소 찾기
+        this.prevBtn = document.querySelector('.fa-angle-left'); // FontAwesome 아이콘 클래스
+        this.nextBtn = document.querySelector('.fa-angle-right'); // FontAwesome 아이콘 클래스
         this.modal = document.querySelector('.worked-detail-modal');
         this.modalContent = document.querySelector('.worked-modal-content');
         this.businessPanel = document.querySelector('.worked-business-panel');
@@ -850,6 +882,7 @@ class CareerDOMReferences {
     }
 }
 
+// 초기화 함수
 // 초기화 함수
 function initializeCareerSection() {
     const state = new CareerSliderState();
@@ -873,6 +906,16 @@ function createCard(item) {
     card.className = 'worked-card';
     card.dataset.id = item.id;
     
+    // 태그 HTML 생성 로직
+    // "#" 로 시작하는 태그는 highlight 클래스 추가
+    const tagsHtml = item.tags.map(tag => {
+        // "#" 로 시작하는 태그인지 확인
+        const isHashTag = tag.startsWith('#');
+        // highlight 클래스를 조건부로 추가
+        const tagClass = isHashTag ? 'worked-tag highlight' : 'worked-tag';
+        return `<span class="${tagClass}">${tag}</span>`;
+    }).join('');
+    
     const html = `
         <img src="${item.image}" alt="${item.title}" class="worked-card-image">
         <div class="worked-card-content">
@@ -880,7 +923,7 @@ function createCard(item) {
             <span class="worked-card-period">${item.period}</span>
             <p class="worked-card-description">${item.description}</p>
             <div class="worked-card-tags">
-                ${item.tags.map(tag => `<span class="worked-tag ${tag === '정부지원사업' ? 'highlight' : ''}">${tag}</span>`).join('')}
+                ${tagsHtml}
             </div>
         </div>
     `;
@@ -896,30 +939,28 @@ function createCard(item) {
 // 카드 위치 업데이트
 // 카드 위치 업데이트
 function updateCardPositions(state, dom) {
-    if (state.isAnimating) return;
-    state.isAnimating = true;
-    
     const cards = dom.slider.querySelectorAll('.worked-card');
     
     cards.forEach((card, index) => {
+        // 모든 카드의 클래스 초기화
         card.classList.remove('active', 'prev', 'next');
         
+        // 현재 카드
         if (index === state.currentIndex) {
             card.classList.add('active');
-        } else if (index === state.getPrevIndex()) {
+        }
+        // 이전 카드
+        else if (index === state.getPrevIndex()) {
             card.classList.add('prev');
-        } else if (index === state.getNextIndex()) {
+        }
+        // 다음 카드
+        else if (index === state.getNextIndex()) {
             card.classList.add('next');
         }
     });
 
-    // 페이지네이션 업데이트
+    // 페이지네이션 업데이트 (있는 경우)
     updatePagination(state, dom);
-
-    // 애니메이션 완료 후 상태 초기화
-    setTimeout(() => {
-        state.isAnimating = false;
-    }, 600); // 애니메이션 지속 시간과 동일하게 설정
 }
 
 // 슬라이드 전환 애니메이션
@@ -1670,19 +1711,26 @@ document.addEventListener('click', (e) => {
 
 
 function toggleVideos(button) {
-    const links = button.nextElementSibling;
+    const links = button.nextElementSibling; // 버튼 바로 다음의 video-links div
     const allLinks = document.querySelectorAll('.video-links');
-    
-    // 다른 모든 비디오 링크 메뉴 닫기
+
+    // 모든 링크 상자 닫기
     allLinks.forEach(el => {
         if (el !== links) {
             el.style.display = 'none';
         }
     });
-    
-    // 현재 메뉴 토글
-    links.style.display = links.style.display === 'block' ? 'none' : 'block';
+
+    // 현재 링크 상자 토글
+    if (links.style.display === 'block') {
+        links.style.display = 'none';
+    } else {
+        links.style.display = 'block';
+    }
 }
+
+
+
 
 // 문서 클릭 시 모든 메뉴 닫기
 document.addEventListener('click', function(event) {
