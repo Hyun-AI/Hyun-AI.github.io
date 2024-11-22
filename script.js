@@ -1589,156 +1589,194 @@ const competitionData = {
     }
 };
 
-// 모달 관련 함수들
-async function showCompetitionDetails(competitionId) {
-    const overlay = document.getElementById('competitions-modal-overlay');
-    const modal = document.getElementById('competitions-modal');
-    
-    try {
-        const competition = competitionData[competitionId];
-        if (!competition) {
-            throw new Error('Competition not found');
+class CompetitionsManager {
+    constructor() {
+        // DOM 요소 참조
+        this.tabButtons = document.querySelectorAll('.competitions-tab-btn');
+        this.tabContents = document.querySelectorAll('.competitions-tab-content');
+        this.modal = document.getElementById('competitions-modal');
+        this.modalOverlay = document.getElementById('competitions-modal-overlay');
+        this.detailsBtn = document.querySelector('.competitions-details-btn');
+        this.filterButtons = document.querySelectorAll('.competitions-controls button');
+
+        // 이벤트 리스너 초기화
+        this.initializeEventListeners();
+    }
+
+    initializeEventListeners() {
+        // 탭 전환 이벤트
+        this.tabButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const tabId = button.getAttribute('data-tab');
+                this.switchTab(tabId);
+            });
+        });
+
+        // 자세히 보기 버튼 이벤트
+        if (this.detailsBtn) {
+            this.detailsBtn.addEventListener('click', () => {
+                this.showCompetitionDetails('dacon_income_ai');
+            });
         }
 
-        // 마크다운 파일 로드
-        const response = await fetch(competition.mdFile);
-        if (!response.ok) {
-            throw new Error('Failed to load competition content');
+        // 모달 닫기 이벤트
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') this.closeModal();
+        });
+
+        if (this.modalOverlay) {
+            this.modalOverlay.addEventListener('click', (e) => {
+                if (e.target === this.modalOverlay) this.closeModal();
+            });
         }
-        
-        const mdContent = await response.text();
-        
-        // 모달 내용 설정
-        modal.innerHTML = `
-            <div class="competitions-modal-header">
-                <h2 class="competitions-modal-title">${competition.title}</h2>
-                <button class="competitions-modal-close" onclick="closeCompetitionModal()">×</button>
-            </div>
-            <div class="competitions-modal-content markdown-content">
-                ${marked.parse(mdContent)}
-            </div>
-        `;
 
-        // 모달 표시 - overlay 먼저 표시
-        overlay.classList.add('active');
-        document.body.style.overflow = 'hidden';
-        
-        // 모달 활성화
-        modal.classList.add('active');
+        // 필터 버튼 이벤트
+        this.filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                this.filterButtons.forEach(btn => btn.classList.remove('active'));
+                button.classList.add('active');
+                
+                const year = button.textContent === '전체' ? 'all' : button.textContent;
+                this.filterCompetitions(year);
+            });
+        });
 
-    } catch (error) {
-        console.error('Error showing competition details:', error);
-        modal.innerHTML = `
+        // 모달 닫기 버튼 이벤트
+        document.addEventListener('click', (e) => {
+            if (e.target.classList.contains('competitions-modal-close')) {
+                this.closeModal();
+            }
+        });
+    }
+
+    // 탭 전환 함수
+   // 탭 전환 함수 수정
+   // 탭 전환 함수 수정
+    switchTab(tabId) {
+        this.tabContents.forEach(content => {
+            content.classList.remove('active');
+            content.style.opacity = '0';
+        });
+        
+        this.tabButtons.forEach(button => button.classList.remove('active'));
+
+        const selectedTab = document.getElementById(`${tabId}-tab`);
+        const selectedButton = document.querySelector(`[data-tab="${tabId}"]`);
+
+        if (selectedTab && selectedButton) {
+            selectedButton.classList.add('active');
+            // 페이드 인 효과를 위한 지연
+            setTimeout(() => {
+                selectedTab.classList.add('active');
+                selectedTab.style.opacity = '1';
+            }, 50);
+        }
+    }
+
+    // 경진대회 상세 정보 표시
+    async showCompetitionDetails(competitionId) {
+        try {
+            const competition = competitionData[competitionId];
+            if (!competition) {
+                throw new Error('Competition not found');
+            }
+
+            // 마크다운 파일 로드
+            const response = await fetch(competition.mdFile);
+            if (!response.ok) {
+                throw new Error('Failed to load competition content');
+            }
+            
+            const mdContent = await response.text();
+            
+            // 모달 내용 설정
+            this.modal.innerHTML = `
+                <div class="competitions-modal-header">
+                    <h2 class="competitions-modal-title">${competition.title}</h2>
+                    <button class="competitions-modal-close">×</button>
+                </div>
+                <div class="competitions-modal-content markdown-content">
+                    ${marked.parse(mdContent)}
+                </div>
+            `;
+
+            // 모달 표시
+            this.modalOverlay.classList.add('active');
+            this.modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+
+        } catch (error) {
+            console.error('Error showing competition details:', error);
+            this.showErrorModal();
+        }
+    }
+
+    // 에러 모달 표시
+    showErrorModal() {
+        this.modal.innerHTML = `
             <div class="competitions-modal-header">
                 <h2 class="competitions-modal-title">오류 발생</h2>
-                <button class="competitions-modal-close" onclick="closeCompetitionModal()">×</button>
+                <button class="competitions-modal-close">×</button>
             </div>
             <div class="competitions-modal-content">
                 <p>내용을 불러오는 중 오류가 발생했습니다.</p>
             </div>
         `;
         
-        overlay.classList.add('active');
-        modal.classList.add('active');
+        this.modalOverlay.classList.add('active');
+        this.modal.classList.add('active');
     }
-}
 
-// 모달 닫기 함수 수정
-function closeCompetitionModal() {
-    const modal = document.getElementById('competitions-modal');
-    const overlay = document.getElementById('competitions-modal-overlay');
-    
-    modal.classList.remove('active');
-    overlay.classList.remove('active');
-    document.body.style.overflow = '';
-}
-
-// 필터링 함수
-function filterCompetitions(year) {
-    const rows = document.querySelectorAll('.competitions-table tbody tr');
-    rows.forEach(row => {
-        const date = row.querySelector('td:nth-child(2)').textContent;
-        const rowYear = '20' + date.split('.')[0];
-        
-        if (year === 'all' || rowYear === year) {
-            row.style.display = '';
-        } else {
-            row.style.display = 'none';
+    // 모달 닫기
+    closeModal() {
+        if (this.modal && this.modalOverlay) {
+            this.modal.classList.remove('active');
+            this.modalOverlay.classList.remove('active');
+            document.body.style.overflow = '';
         }
-    });
+    }
+
+    // 경진대회 필터링
+    filterCompetitions(year) {
+        const rows = document.querySelectorAll('.competitions-table tbody tr');
+        rows.forEach(row => {
+            const date = row.querySelector('td:nth-child(2)').textContent;
+            const rowYear = '20' + date.split('.')[0];
+            
+            row.style.display = (year === 'all' || rowYear === year) ? '' : 'none';
+        });
+    }
 }
 
-// 이벤트 리스너 설정
-document.addEventListener('DOMContentLoaded', () => {
-    // 자세히 보기 버튼 이벤트
-    const detailsBtn = document.querySelector('.competitions-details-btn');
-    if (detailsBtn) {
-        detailsBtn.addEventListener('click', () => {
-            showCompetitionDetails('dacon_income_ai');
-        });
-    }
-
-    // 필터 버튼 이벤트
-    const filterButtons = document.querySelectorAll('.competitions-controls button');
-    filterButtons.forEach(button => {
-        button.addEventListener('click', (e) => {
-            filterButtons.forEach(btn => btn.classList.remove('active'));
-            button.classList.add('active');
-            
-            const year = button.textContent === '전체' ? 'all' : button.textContent;
-            filterCompetitions(year);
-        });
-    });
-
-    // ESC 키로 모달 닫기
-    document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') closeCompetitionModal();
-    });
-
-    // 모달 외부 클릭 시 닫기
-    document.getElementById('competitions-modal-overlay')?.addEventListener('click', (e) => {
-        if (e.target.id === 'competitions-modal-overlay') closeCompetitionModal();
-    });
-});
-
-// 모달 닫기 버튼 이벤트
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('competitions-modal-close')) {
-        closeCompetitionModal();
-    }
-});
-
-
-
+// 비디오 링크 토글 함수
 function toggleVideos(button) {
-    const links = button.nextElementSibling; // 버튼 바로 다음의 video-links div
+    const links = button.nextElementSibling;
     const allLinks = document.querySelectorAll('.video-links');
 
-    // 모든 링크 상자 닫기
     allLinks.forEach(el => {
         if (el !== links) {
             el.style.display = 'none';
         }
     });
 
-    // 현재 링크 상자 토글
-    if (links.style.display === 'block') {
-        links.style.display = 'none';
-    } else {
-        links.style.display = 'block';
-    }
+    links.style.display = links.style.display === 'block' ? 'none' : 'block';
 }
 
+// 문서 로드 완료 시 초기화
+document.addEventListener('DOMContentLoaded', () => {
+    const competitionsManager = new CompetitionsManager();
 
+    // 비디오 링크 외부 클릭 시 닫기
+    document.addEventListener('click', (event) => {
+        if (!event.target.closest('.video-container')) {
+            document.querySelectorAll('.video-links').forEach(el => {
+                el.style.display = 'none';
+            });
+        }
+    });
 
-
-// 문서 클릭 시 모든 메뉴 닫기
-document.addEventListener('click', function(event) {
-    if (!event.target.closest('.video-container')) {
-        document.querySelectorAll('.video-links').forEach(el => {
-            el.style.display = 'none';
-        });
-    }
+    // 초기 탭 설정 (현재 진행중 탭을 기본으로)
+    competitionsManager.switchTab('current');
 });
 
 

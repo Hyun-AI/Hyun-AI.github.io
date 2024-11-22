@@ -429,7 +429,7 @@ li {
     position: relative;
     overflow: hidden;
     white-space: nowrap;
-    height: 1.1em; /* 텍스트 높이 고정 */
+    height: 1.5rem; /* 텍스트 높이 고정 */
 }
 
 .typing-text::after {
@@ -1463,11 +1463,12 @@ aside > p:first-of-type::before {
     padding-top: 1rem;  /* 위쪽 여백 추가 */
     visibility: visible;  /* 태그 보이게 설정 */
     width: 100%;
+    font-family: 'NanumSquareRoundBold';
 }
 
 .worked-tag {
     padding: 0.4rem 1rem;
-    background: rgba(227, 27, 181, 0.1);
+    background: rgba(47, 18, 215, 0.484);
     border-radius: 20px;
     font-size: 0.8rem;
     color: #fff;
@@ -1483,7 +1484,7 @@ aside > p:first-of-type::before {
 
 /* 하이라이트 태그 */
 .worked-tag.highlight {
-    background: rgba(224, 71, 41, 0.2);
+    background: rgba(20, 134, 88, 0.429);
     visibility: visible;  /* 태그 보이게 설정 */
 }
 
@@ -1982,10 +1983,13 @@ aside > p:first-of-type::before {
 .competitions-wrapper {
     position: relative;
     z-index: 2;
-    width: 70%;
+    width: 100%;
     /* max-width: 1400px; */
     margin: 0 auto;
     padding: 0 2rem;
+    display: flex;           /* flex 추가 */
+    flex-direction: column;  /* 세로 방향 정렬 */
+    align-items: center;     /* 가로축 중앙 정렬 */
 }
 
 /* 제목 스타일 */
@@ -2008,18 +2012,17 @@ aside > p:first-of-type::before {
     display: flex;
     gap: 2.5rem;  /* 간격 증가 */
     align-items: flex-start; /* 상단 정렬로 변경 */
+    margin-top: 2rem;
 }
 
 /* 하이라이트 카드 스타일 */
 .competitions-highlight-card {
-    flex: 0 0 300px; /* 카드 너비 축소 */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
     padding: 2rem;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: sticky; /* 스크롤 시 고정 */
-    top: 2rem;
 }
 
 .competitions-highlight-card:hover {
@@ -2055,6 +2058,7 @@ aside > p:first-of-type::before {
 .competitions-card-rank {
     color: #D4A373;
     font-size: 1rem;
+    text-align: center;
 }
 
 .competitions-card-description {
@@ -2084,13 +2088,17 @@ aside > p:first-of-type::before {
 /* 대회 목록 테이블 스타일 */
 .competitions-list {
     flex: 1;
+    width: 100%;
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 2.5;
     /* min-width: auto; 테이블 오버플로우 방지 */
     overflow-x: auto; /* 가로 스크롤 추가 */
     z-index: 1;
+    margin: 2rem auto;      /* 상하 여백 추가 */
+    max-width: 1800px;      /* 최대 너비 설정 */
+    box-sizing: border-box; /* 패딩을 너비에 포함 */
 }
 
 /* 필터 컨트롤 */
@@ -2139,7 +2147,7 @@ aside > p:first-of-type::before {
 /* 테이블 스타일 */
 .competitions-table {
     width: 100%;
-    min-width: auto; /* 최소 너비 설정 */
+    min-width: 1000px;  /* 최소 너비 설정하여 테이블이 더 넓게 표시되도록 */
     border-collapse: separate;
     border-spacing: 0;
     margin-top: 1rem;
@@ -2177,12 +2185,30 @@ aside > p:first-of-type::before {
 }
 
 
+/* 테이블 열 너비 조정 */
+.competitions-table th:nth-child(1) { width: 10%; }  /* 연도 */
+.competitions-table th:nth-child(2) { width: 15%; }  /* 주최 */
+.competitions-table th:nth-child(3) { width: 30%; }  /* 대회명 */
+.competitions-table th:nth-child(4) { width: 15%; }  /* 수상 */
+.competitions-table th:nth-child(5) { width: 10%; }  /* 상위% */
+.competitions-table th:nth-child(6) { width: 15%; }  /* 링크 */
+
+
 /* 기간 열 정렬 */
 .competitions-table th:nth-child(2),
 .competitions-table td:nth-child(2) {
     text-align: left;
 }
 
+.competitions-table td:nth-child(3) {
+    text-align: left;
+}
+
+/* 테이블 셀 패딩 증가 */
+.competitions-table th,
+.competitions-table td {
+    padding: 1.5rem 2rem;  /* 패딩 증가 */
+}
 
 /* 스크롤바 스타일링 */
 .competitions-list::-webkit-scrollbar {
@@ -2526,6 +2552,108 @@ aside > p:first-of-type::before {
 }
 
 
+
+
+
+
+/* 탭 관련 스타일 수정 */
+.competitions-tab-content {
+    display: none; /* 기본적으로 모든 탭 컨텐츠는 숨김 */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+
+/* 탭 스타일 추가 */
+.competitions-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.competitions-tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #D4A373;
+    transition: width 0.3s ease;
+}
+
+/* 활성화된 탭의 콘텐츠 레이아웃 */
+#highlight-tab.competitions-tab-content.active {
+    display: flex;
+    justify-content: center;
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 1;
+    flex-direction: column;
+}
+
+#history-tab.competitions-tab-content.active {
+    display: block;
+}
+
+/* 하이라이트 카드가 활성화될 때 애니메이션 */
+.competitions-tab-content.active .competitions-highlight-card {
+    animation: fadeIn 0.3s ease forwards;
+}
+
+.competitions-tabs button {
+    padding: 0.8rem 2rem;
+    border: 2px solid rgba(212, 163, 115, 0.3);
+    border-radius: 30px;
+    background: transparent;
+    color: #fff;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* 탭 버튼 호버 효과 */
+.competitions-tabs button:hover {
+    background: rgba(212, 163, 115, 0.1);
+    border-color: rgba(212, 163, 115, 0.6);
+    transform: translateY(-2px);
+}
+
+/* 활성화된 탭 버튼 스타일 */
+.competitions-tabs button.active {
+    background: rgba(212, 163, 115, 0.2);
+    border-color: #D4A373;
+    color: #D4A373;
+}
+
+/* 기존 탭 버튼 스타일 다음에 추가 */
+.competitions-tabs button.active {
+    background: rgba(212, 163, 115, 0.2);
+    border-color: #D4A373;
+    color: #D4A373;
+}
+
+/* 여기에 새로운 CSS 추가 */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+
+
+
+
+
+
+
 .video-container {
     position: relative;
     display: inline-block;
@@ -2536,7 +2664,11 @@ aside > p:first-of-type::before {
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0;
+    padding: 6px 12px;
+    color: #f0f0f0;
+    font-size: 0.9rem;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
 }
 
 .video-container button {
@@ -2971,11 +3103,11 @@ aside > p:first-of-type::before {
 
 /* 네비게이션 버튼 좌우 위치 조정 */
 .side-project__nav--prev {
-    left: 2rem;
+    left: 0.5rem;
 }
 
 .side-project__nav--next {
-    right: 2rem;
+    right: 0.5rem;
 }
 
 /* 네비게이션 아이콘 크기 및 스타일 수정 */

@@ -154,7 +154,6 @@
                     </div>
                 </section>
 
-
                 <!-- Career History 섹션 -->
                 <section class="animation-section" id="projects">
                     <div class="worked-container">
@@ -186,10 +185,23 @@
                 <section class="animation-section" id="competitions">
                     <div class="competitions-section">
                         <div class="competitions-wrapper">
+                        <div class="competitions-header">
                             <h2 class="competitions-title">COMPETITIONS</h2>
                             <div class="competitions-subtitle">데이콘&경진대회 경험</div>
-                            <div class="competitions-container">
-                                <!-- 하이라이트 카드 -->
+                        </div>
+                    
+                        <!-- 필터 버튼 수정 -->
+                        <div class="competitions-tabs">
+                            <button class="competitions-tab-btn active" data-tab="highlight">가장 최근 대회</button>
+                            <button class="competitions-tab-btn" data-tab="history">전체 참가 내역</button>
+                        </div>
+                        <div class="competitions-container"></div>
+                    
+                        <!-- 컨텐츠 영역 수정 -->
+                        <div class="competitions-content">
+
+                            <!-- 현재 진행중 탭 -->
+                            <div id="highlight-tab" class="competitions-tab-content active">
                                 <div class="competitions-highlight-card">
                                     <div class="competitions-card-date">2024.03.11 ~ 2024.04.08</div>
                                     <h3 class="competitions-card-title">소득 예측 AI 해커톤</h3>
@@ -202,19 +214,16 @@
                                     </p>
                                     <button class="competitions-details-btn">자세히 보기</button>
                                 </div>
-                                <!-- 대회 목록 -->
+                                </div>
+                            </div>
+                            
+                            <!-- 전체 이력 탭 -->
+                            <div id="history-tab" class="competitions-tab-content">
                                 <div class="competitions-list">
-                                    <!-- 필터 컨트롤 -->
-                                    <div class="competitions-controls">
-                                        <button class="active">전체</button>
-                                        <button>2024</button>
-                                        <button>2022</button>
-                                        <button>2021</button>
-                                    </div>
                                     <table class="competitions-table">
                                         <thead>
                                             <tr>
-                                                <th>연도</th>                                                
+                                                <th>연도</th>
                                                 <th>주최</th>
                                                 <th>대회명</th>
                                                 <th>수상</th>
@@ -315,7 +324,7 @@
                                                         <a href="PDF/tree-project-presentation.pdf" target="_blank" class="competitions-pdf-link">
                                                             <img src="icons/competitions/pdf.png" class="competitions-file-icon" alt="PDF" title="발표자료">
                                                         </a>
-                                                        <div class="video-container">
+                                                        <!-- <div class="video-container">
                                                             <button onclick="toggleVideos(this)" class="video-btn">
                                                                 <img src="icons/competitions/playbuttom.png" class="competitions-file-icon" alt="비디오" title="영상보기">
                                                             </button>
@@ -326,7 +335,7 @@
                                                                 <div class="video-link">
                                                                     <a href="video/competitions/tree_project_2.mp4" target="_blank" class="competitions-video-link">영상2</a>
                                                                 </div>
-                                                            </div>
+                                                            </div> -->
                                                         </div>
                                                     </div>
                                                 </td>
