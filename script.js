@@ -614,7 +614,7 @@ const careerData = {
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
             tags: ['PYTHON', 'BIGDATA', 'ML'],
             mdFile: './md/project/bigdata2022.md',
-            image: './images/projects/work1.png'
+            image: './images/projects/2022중소기업데이터분석.png'
         },
         {
             id: 'productmonitoring',
@@ -639,7 +639,7 @@ const careerData = {
             title: '중소기업 빅데이터 분석·활용 지원사업',
             period: '2023년 7월 ~ 2022년 11월',
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
-            tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
+            tags: ['#정부지원사업', '#고양특별시', '#고양시진흥원'],
             mdFile: './md/project/bigdata2023.md',
             image: './images/projects/work4.png'
         },
