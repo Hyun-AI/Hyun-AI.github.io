@@ -1497,7 +1497,7 @@ aside > p:first-of-type::before {
 /* 네비게이션 버튼 */
 .worked-nav {
     position: absolute;
-    top: 50%;
+    top: 45%;
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
@@ -1505,16 +1505,26 @@ aside > p:first-of-type::before {
     background: rgba(255, 255, 255, 0.1);
     border: none;
     cursor: pointer;
-    z-index: 3;
+    z-index: 5;
     transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .worked-nav:hover {
     background: rgba(212, 163, 115, 0.2);
+    transform: translateY(-50%) scale(1.1);
 }
 
-.worked-prev { left: 0; }
-.worked-next { right: 0; }
+
+.worked-prev {
+    left: 10px;
+}
+
+.worked-next {
+    right: 10px;
+}
 
 .worked-nav-icon {
     color: #fff;
@@ -1676,6 +1686,39 @@ aside > p:first-of-type::before {
     background: rgba(212, 163, 115, 0.1);
     border-color: rgba(212, 163, 115, 0.6);
     transform: translateY(-50%) rotate(90deg);  /* 두 transform 효과 결합 */
+}
+
+
+/* 모바일 디바이스 */
+@media (max-width: 768px) {
+    .worked-nav {
+        width: clamp(35px, 4vw, 45px);
+        height: clamp(35px, 4vw, 45px);
+    }
+    
+    .worked-nav-icon {
+        font-size: clamp(1rem, 1.5vw, 1.4rem);
+    }
+    
+    .worked-prev {
+        left: 5px;
+    }
+    
+    .worked-next {
+        right: 5px;
+    }
+}
+
+/* 태블릿 디바이스 */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .worked-nav {
+        width: clamp(38px, 4.5vw, 50px);
+        height: clamp(38px, 4.5vw, 50px);
+    }
+    
+    .worked-nav-icon {
+        font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+    }
 }
 
 /* =========================================
@@ -3086,10 +3129,10 @@ aside > p:first-of-type::before {
 /* 네비게이션 버튼 */
 .side-project__nav {
     position: absolute;
-    top: 50%;  
+    top: 50%;
     transform: translateY(-50%);
-    width: clamp(30px, 4vw, 50px);  /* 최소 30px, 최대 50px */
-    height: clamp(30px, 4vw, 50px); /* 최소 30px, 최대 50px */
+    width: 50px;
+    height: 50px;
     background: rgba(255, 255, 255, 0.1);
     border: none;
     border-radius: 50%;
@@ -3101,10 +3144,11 @@ aside > p:first-of-type::before {
     transition: all 0.3s ease;
 }
 
+
 /* 네비게이션 버튼 호버 효과 */
 .side-project__nav:hover {
-    background:  rgba(212, 163, 115, 0.2);
-    transform: translateY(-50%) scale(1.1); /* 호버 시 약간 확대 */
+    background: rgba(212, 163, 115, 0.2);
+    transform: translateY(-50%) scale(1.1);
 }
 
 
@@ -3128,11 +3172,11 @@ aside > p:first-of-type::before {
 
 /* 네비게이션 버튼 좌우 위치 조정 */
 .side-project__nav--prev {
-    left: 0.5rem;
+    left: 20px;
 }
 
 .side-project__nav--next {
-    right: 0.5rem;
+    right: 20px;
 }
 
 /* 네비게이션 아이콘 크기 및 스타일 수정 */
@@ -3189,42 +3233,6 @@ aside > p:first-of-type::before {
 .side-project__card:hover .side-project__card-inner {
     transform: scale(1.02);
 }
-
-/* 반응형 디자인 */
-@media (max-width: 1200px) {
-    .side-project__card {
-        width: 400px;
-        height: 600px;
-    }
-}
-
-@media (max-width: 768px) {
-    .side-project__card {
-        width: 300px;
-        height: 450px;
-    }
-    
-    .side-project__nav {
-        width: 40px;
-        height: 40px;
-    }
-    
-    .side-project__nav--prev {
-        left: 20px;
-    }
-    
-    .side-project__nav--next {
-        right: 20px;
-    }
-    
-    .side-project__card-title {
-        font-size: 1.5rem;
-    }
-}
-
-
-
-
 
 
 
@@ -3711,5 +3719,9 @@ aside > p:first-of-type::before {
 .slide-layer__content::-webkit-scrollbar-thumb:hover {
     background: rgba(212, 163, 115, 0.5);
 }
+
+
+
+
 
 
