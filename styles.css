@@ -391,7 +391,7 @@ li {
     overflow: hidden;
     text-align: center;
     padding: 2rem;
-    background-image: url('images/home/plasma.png');
+    background-image: url('images/background/sky.jpg');
     background-size: cover;
     background-position: center;
 }
@@ -1036,7 +1036,7 @@ aside > p:first-of-type::before {
     position: relative;
     height: 100vh;  /* 100vh로 수정 */
     padding: 0;     /* 패딩 제거 */
-    background-image: url('images/home/plasma.png');
+    /* background-image: url('images/home/plasma.png'); */
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -1312,7 +1312,7 @@ aside > p:first-of-type::before {
 .worked-container {
     position: relative;
     height: 100vh;
-    background-image: url('images/home/plasma.png');
+    /* background-image: url('images/home/plasma.png'); */
     background-size: cover;
     background-position: center;
     display: flex;
@@ -1728,7 +1728,7 @@ aside > p:first-of-type::before {
 /* 기존 CSS 유지 */
 .worked-business-toggle {
     display: block;
-    width: 200px;
+    width: clamp(200px, 25vw, 300px); /* 최소 200px, 최대 300px, 화면 너비의 25% */
     margin: 2rem auto 0;
     padding: 1rem 2rem;
     background: rgba(212, 163, 115, 0.2);
@@ -2009,7 +2009,7 @@ aside > p:first-of-type::before {
 .competitions-section {
     position: relative;
     min-height: 100vh;
-    background-image: url('images/home/plasma.png');
+    /* background-image: url('images/home/plasma.png'); */
     background-size: cover;
     background-position: center;
     display: flex;
@@ -2636,6 +2636,7 @@ aside > p:first-of-type::before {
     display: flex;
     justify-content: center;
     max-width: 600px;
+    /* max-height: 400px; */
     margin: 0 auto;
     opacity: 1;
     flex-direction: column;
@@ -2942,7 +2943,7 @@ aside > p:first-of-type::before {
 /* 사이드 프로젝트 섹션 기본 스타일 */
 .side-project {
     position: relative;
-    background: url('images/home/plasma.png') no-repeat center center;
+    /* background: url('images/home/plasma.png') no-repeat center center; */
     background-size: cover;
     min-height: 100vh;
     padding: 4rem 0;
@@ -3245,7 +3246,7 @@ aside > p:first-of-type::before {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
+    width: 0;
     height: 100%;
     background: rgba(0, 0, 0, 0.5);
     z-index: 1000;
@@ -3259,14 +3260,15 @@ aside > p:first-of-type::before {
     right: 0;
     left: auto;
     bottom: -100%;
-    width: min(1100px, 100%);
-    height: min(870px, 100vh);
+    top: 50px;
+    width: min(1200px, 100%) !important;
+    height: min(900px, 100vh);
     transition: bottom 0.8s ease-out;
-    overflow-y: scroll; /* auto 대신 scroll 사용 */
+    overflow-y: scroll;
     border-left: 2px solid #D4A373;
     border-top: 2px solid #D4A373;
+    border-bottom: 2px solid #D4A373;
     border-radius: 30px 0 0 30px;
-    /* background-image: url('images/background/switzerland.jpg'); */
     background: #1E2A3B !important;
     background-size: cover;
     background-position: center;
@@ -3348,7 +3350,6 @@ aside > p:first-of-type::before {
 .slide-layer__body {
     padding: 2rem 3rem;
     margin: 0 auto; /* 중앙 정렬 */
-    max-width: 1000px; /* 콘텐츠의 최대 너비 설정 */
 }
 
 /* 로딩 표시 */
@@ -3391,38 +3392,7 @@ aside > p:first-of-type::before {
     background: rgba(212, 163, 115, 0.5);
 }
 
-/* 슬라이드 레이어 스타일 */
-.project-slide-layer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.5);
-    z-index: 1000;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.8s ease, visibility 0.8s ease;
-}
 
-.slide-layer__content {
-    position: fixed;
-    right: 0;
-    left: auto;
-    bottom: -100%;
-    width: min(1100px, 100%); /* 최대 1100px, 화면이 작아지면 100%로 조정 */
-    height: min(870px, 100vh); /* 최대 870px, 화면이 작아지면 100vh로 조정 */
-    background: #0F1624;
-    transition: bottom 0.8s ease-out;
-    overflow-y: auto;
-    border-left: 2px solid #D4A373;
-    border-top: 2px solid #D4A373;
-    border-bottom: 2px solid #D4A373;
-    border-radius: 30px 0 0 30px;
-    background-image: url('images/background/switzerland.jpg');
-    background-size: cover;
-    background-position: center;
-}
 
 /* 기존 슬라이더 영역 스타일 수정 */
 .side-project__slider-container {

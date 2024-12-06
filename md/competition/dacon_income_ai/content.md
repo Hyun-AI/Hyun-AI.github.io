@@ -96,3 +96,42 @@ graph TD
   - AI 도구: ChatGPT, GPTs
 
 ---
+
+
+## 프로젝트 개요
+- **기간**: 2024.03.11 ~ 2024.04.08
+- **목적**: 개인 특성 데이터 기반 소득 수준 예측 AI 모델 개발
+- **성과**: 1,200명 중 16위 달성
+
+![medium](images/competition/dacon_income_ai/process.png)
+*데이터 초기 분포 분석*
+
+## 데이터 전처리 및 Feature Engineering
+- 이상치 처리: 윈저화 방법(상하위 3%) 적용
+- Feature Engineering: 대륙별 분류, 연령대 범주화
+- 인코딩: Frequency Encoding, One-hot Encoding 적용
+
+| 전처리 전 | 전처리 후 |
+|:---:|:---:|
+| ![이상치 처리 전](Untitled.png) | ![이상치 처리 후](Untitled.png) |
+*이상치 처리 전후 비교*
+
+## 모델링 프로세스
+```mermaid
+graph LR
+    A[데이터 전처리] --> B[모델 선정]
+    B --> C[하이퍼파라미터 튜닝]
+    C --> D[앙상블 모델링]
+    D --> E[Weighted Blending]
+```
+
+- 주요 모델: XGBoost, LightGBM, CatBoost
+- K-Fold 교차 검증으로 과적합 방지
+- Weighted Blending으로 최종 성능 향상
+
+*앙상블 모델 성능 비교*
+
+## 핵심 성과
+- ChatGPT와 GPTs 활용한 효율적인 개발
+- 실제 데이터 기반 End-to-End 프로젝트 경험
+- 앙상블 기법과 가중치 모델 실전 적용
