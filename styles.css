@@ -1728,7 +1728,7 @@ aside > p:first-of-type::before {
 /* 기존 CSS 유지 */
 .worked-business-toggle {
     display: block;
-    width: clamp(200px, 25vw, 300px); /* 최소 200px, 최대 300px, 화면 너비의 25% */
+    width: clamp(200px, 25vw, 250px); /* 최소 200px, 최대 300px, 화면 너비의 25% */ 
     margin: 2rem auto 0;
     padding: 1rem 2rem;
     background: rgba(212, 163, 115, 0.2);

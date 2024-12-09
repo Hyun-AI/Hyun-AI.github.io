@@ -922,9 +922,7 @@ function createCard(item) {
             <h3 class="worked-card-title">${item.title}</h3>
             <span class="worked-card-period">${item.period}</span>
             <p class="worked-card-description">${item.description}</p>
-            <div class="worked-card-tags">
-                ${tagsHtml}
-            </div>
+            <!-- <div class="worked-card-tags">${tagsHtml}</div> -->
         </div>
     `;
     
