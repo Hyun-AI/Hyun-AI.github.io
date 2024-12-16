@@ -609,34 +609,34 @@ const careerData = {
     projects: [
         {
             id: 'bigdata2022',
-            title: '중소기업 빅데이터 분석·활용 지원사업',
+            title: '(1) 중소기업 빅데이터 분석·활용 지원사업',
             period: '2022.08 - 2022.12',
-            description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
+            description: '제품기획, 제조공정 관리, 영업 및 마케팅, AS서비스 등 전 가치사슬에 대한 데이터 기반 컨설팅 제공으로 중소기업의 데이터 분석 활성화 및 디지털 전환의 사업입니다.',
             tags: ['PYTHON', 'BIGDATA', 'ML'],
             mdFile: './md/project/bigdata2022.md',
             image: './images/projects/work1.png'
         },
         {
             id: 'productmonitoring',
-            title: '신상품 모니터링',
+            title: '(2) 신상품 모니터링',
             period: '2023.07 - 2023.11',
-            description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
+            description: '신상품 모니터링 사업은 산업별로 새롭게 출시되는 상품·기술·서비스를 식별하고 추적하기 위한 프로젝트입니다.',
             tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
             mdFile: './md/project/monitoring.md',
             image: './images/projects/work2.png'
         },
         {
             id: 'ipservicegrowth_dev',
-            title: '지식재산서비스 성장지원사업',
+            title: '(3) 지식재산서비스 성장지원사업',
             period: '2023년 5월 ~ 2023년 11월',
-            description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
+            description: '지식재산서비스 성장지원사업은 특허청이 주관하고 한국특허정보원이 전담하는 IP서비스 연구개발 지원 프로그램입니다.',
             tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
             mdFile: './md/project/bm-1.md',
             image: './images/projects/work3.png'
         },
         {
             id: 'bigdata2023',
-            title: '중소기업 빅데이터 분석·활용 지원사업',
+            title: '(4) 중소기업 빅데이터 분석·활용 지원사업',
             period: '2023년 7월 ~ 2022년 11월',
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
             tags: ['#정부지원사업', '#고양특별시', '#고양시진흥원'],
@@ -645,7 +645,7 @@ const careerData = {
         },
         {
             id: 'ipservicegrowth_biz',
-            title: '지식재산서비스 사업화',
+            title: '(5) 지식재산서비스 사업화',
             period: '2023년 12월 ~ 2024년 1월',
             description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
             tags: ['PYTHON', 'BIGDATA', 'DeepLearning'],
