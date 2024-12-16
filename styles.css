@@ -1381,8 +1381,8 @@ aside > p:first-of-type::before {
     position: absolute;
     width: 350px;
     height: auto;
-    min-height: 450px;  /* 최소 높이 설정 */
-    max-height: 550px;  /* 최대 높이 제한 */
+    min-height: 400px;  /* 카드 최소 높이 설정 */
+    max-height: 400px;  /* 카드 최대 높이 제한 */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
@@ -1602,7 +1602,7 @@ aside > p:first-of-type::before {
     background-position: center;
     border-radius: 20px;
     width: 100%; /* 전체 너비 사용 */
-    max-width: 1000px; /* 최대 너비 증가 */
+    max-width: 1200px; /* 최대 너비 증가 */
     padding: 1rem;
     height: 90vh;
     /* max-height: 85vh; */
