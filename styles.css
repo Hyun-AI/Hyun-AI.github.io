@@ -71,12 +71,12 @@ body {
 
 /* 제목 스타일 */
 h1 {
-    font-family: 'NanumSquareRoundBold', Arial, sans-serif;
+    font-family: 'GmarketSansMedium', 'NanumSquareRoundBold', Arial, sans-serif;
     font-size: 1.5rem;
 }
 
 h2 {
-    font-family: 'NanumSquareRoundBold', Arial, sans-serif;
+    font-family: 'GmarketSansMedium', 'NanumSquareRoundBold', Arial, sans-serif;
     font-size: 1.8rem;
 }
 
@@ -644,15 +644,15 @@ li {
  * ========================================= */
 .markdown-content h1,
 .markdown-content h2{
-    color: #d45f7e;
+    color: #D4A373;
     margin: 1.5rem 0 1rem;
-    font-family: 'NanumSquareRoundBold', Arial, sans-serif;
+    font-family: 'GmarketSansMedium', 'NanumSquareRoundBold', Arial, sans-serif;
 }
 
 .markdown-content h3 {
     color: #D4A373;
     margin: 1.5rem 0 1rem;
-    font-family: 'NanumSquareRoundBold', Arial, sans-serif;
+    font-family: 'GmarketSansMedium', 'NanumSquareRoundBold', Arial, sans-serif;
 }
 
 .markdown-content h1 { 
@@ -1381,8 +1381,8 @@ aside > p:first-of-type::before {
     position: absolute;
     width: 350px;
     height: auto;
-    min-height: 400px;  /* 카드 최소 높이 설정 */
-    max-height: 400px;  /* 카드 최대 높이 제한 */
+    min-height: 450px;  /* 카드 최소 높이 설정 */
+    max-height: 450px;  /* 카드 최대 높이 제한 */
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
