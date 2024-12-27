@@ -254,8 +254,8 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 타이핑 효과 시작
     const typingElement = document.querySelector('.typing-text');
-    const text = "미래 기술과 소통을 중시하는 유현승입니다.";
-    const highlightWords = ["유현승"];
+    const text = "미래 기술과 소통 그리고 업무 효율성을 중시 합니다.";
+    const highlightWords = ["미래 기술", "소통", "업무 효율성"];
 
     // 하이라이트된 HTML 생성 함수
     function getHighlightedHTML(text) {
@@ -629,7 +629,7 @@ const careerData = {
             id: 'ipservicegrowth_dev',
             title: '(3) 지식재산서비스 성장지원사업',
             period: '2023년 5월 ~ 2023년 11월',
-            description: '지식재산서비스 성장지원사업은 특허청이 주관하고 한국특허정보원이 전담하는 IP서비스 연구개발 지원 프로그램입니다.',
+            description: '특허청이 주관하고 한국특허정보원이 전담하는 IP서비스 연구개발 지원 프로그램입니다.',
             tags: ['PYTHON', 'BIGDATA', 'DeepLearning', '#정부지원사업'],
             mdFile: './md/project/bm-1.md',
             image: './images/projects/work3.png'
@@ -638,7 +638,7 @@ const careerData = {
             id: 'bigdata2023',
             title: '(4) 중소기업 빅데이터 분석·활용 지원사업',
             period: '2023년 7월 ~ 2022년 11월',
-            description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
+            description: '제품기획, 제조공정 관리, 영업 및 마케팅, AS서비스 등 전 가치사슬에 대한 데이터 기반 컨설팅 제공으로 중소기업의 데이터 분석 활성화 및 디지털 전환의 사업입니다.',
             tags: ['#정부지원사업', '#고양특별시', '#고양시진흥원'],
             mdFile: './md/project/bigdata2023.md',
             image: './images/projects/work4.png'
@@ -647,7 +647,7 @@ const careerData = {
             id: 'ipservicegrowth_biz',
             title: '(5) 지식재산서비스 사업화',
             period: '2023년 12월 ~ 2024년 1월',
-            description: '중소기업의 데이터 기반 의사결정을 지원하기 위한 프로젝트로, 매출 데이터 분석 및 예측 모델을 구축했습니다.',
+            description: '특허청이 주관하고 한국특허정보원이 전담하는 IP서비스 연구개발 지원 프로그램입니다.',
             tags: ['PYTHON', 'BIGDATA', 'DeepLearning'],
             mdFile: './md/project/bm-2.md',
             image: './images/projects/work5.png'
@@ -1146,7 +1146,7 @@ function loadBusinessPlans(state, dom) {
             <div class="year-header">
                 <div class="year-label">
                     ${year}
-                    <div class="project-count">${plans.length}개 계획서</div>
+                    <div class="project-count">제안서 작성 리스트 - ${plans.length}개</div>
                 </div>
                 <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1438,7 +1438,7 @@ function createBusinessPlansList() {
             <div class="year-header" onclick="toggleYear(this)">
                 <div class="year-label">
                     ${year}
-                    <div class="project-count">${plans.length}개 계획서</div>
+                    <div class="project-count">${plans.length}개 사업 작성 리스트</div>
                 </div>
                 <svg class="expand-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
                     <path d="M19 9l-7 7-7-7" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -1806,18 +1806,18 @@ const sideProjectData = {
         mainDescription: "데이터베이스를 효율적으로 관리하고 모니터링할 수 있는 관리자 도구입니다. AI와 데이터를 활용하여 직관적인 인터페이스를 구현했습니다.",
         tags: ['Database', 'Management'],
         mdFile: 'md/side-project/db관리자도구.md',
-        image: 'images/home/aurora.png'
+        image: 'images/side-project/db-관리자.jpg'
     },
     '가계부': {
-        title: '가계부',
+        title: 'AI 기반 스마트 가계부 챗봇',
         category: 'Finance Tool',
         type: 'Personal Finance',
         description: '개인 재무를 관리할 수 있는 스마트한 가계부 도구입니다.',
         headerText: "Side Projects - 가계부",
         mainDescription: "AI 기반의 지능형 가계부로 수입/지출을 효과적으로 관리하고 분석할 수 있습니다.",
         tags: ['Finance', 'AI'],
-        mdFile: 'md/side-project/신상품모니터링1.md',
-        image: 'images/background/stratosphere.jpg'
+        mdFile: 'md/side-project/가계부-챗봇.md',
+        image: 'images/side-project/가계부.jpg'
     },
     '챗봇': {
         title: 'AI 챗봇',
@@ -1827,7 +1827,7 @@ const sideProjectData = {
         headerText: "Side Projects - AI 챗봇",
         mainDescription: "자연어 처리 기술을 활용한 지능형 챗봇으로 사용자와 자연스러운 대화가 가능합니다.", 
         tags: ['AI', 'NLP'],
-        mdFile: 'md/side-project/신상품모니터링2.md',
+        mdFile: 'md/side-project/자연어DB관리.md',
         image: 'images/background/switzerland.jpg'
     }
 };
