@@ -51,9 +51,8 @@
 
 - 첫 화면에 전반적인 로컬 환경에 대한 정보와, 데이터에 대한 간단한 정보를 볼 수 있도록 하였음.
 - **`이미지`**Version_4/images/side-project/db-관리자/image0.png
-![small-image](images/side-project/db-관리자/image0.png)
 ![large-image](images/side-project/db-관리자/image0.png)
-![medium-image](images/side-project/db-관리자/image1.png)
+![large-image](images/side-project/db-관리자/image1.png)
 ![large-image](images/side-project/db-관리자/image2.png)
 
 1. 데이터 관리
