@@ -2083,10 +2083,12 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     // 모달 외부 클릭 시 닫기
+    // 모달 외부 클릭 시 닫기
     const slideLayer = document.querySelector('.project-slide-layer');
     if (slideLayer) {
         slideLayer.addEventListener('click', (e) => {
-            if (e.target === slideLayer) {
+            const slideContent = slideLayer.querySelector('.slide-layer__content');
+            if (!slideContent.contains(e.target)) {
                 closeSlideLayer();
             }
         });
