@@ -656,17 +656,17 @@ li {
 }
 
 .markdown-content h1 { 
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 2rem;
 }
 
 .markdown-content h2 { 
-    font-size: 2rem;
+    font-size: 1.5rem;
     margin: 2rem 0 1.5rem;
 }
 
 .markdown-content h3 { 
-    font-size: 1.75rem;
+    font-size: 1.3rem;
     margin: 1.5rem 0 1rem;
 }
 
@@ -698,7 +698,7 @@ li {
  * 코드 블록 스타일 (Cobalt2 테마)
  * ========================================= */
 .markdown-content pre {
-    background: #906A6F !important;
+    background: #2D3747 !important;
     border-radius: 8px;
     overflow-x: auto;
     border: none !important;
@@ -1037,6 +1037,7 @@ aside > p:first-of-type::before {
     height: 100vh;  /* 100vh로 수정 */
     padding: 0;     /* 패딩 제거 */
     /* background-image: url('images/home/plasma.png'); */
+    background-image: url('images/background/sky.jpg');
     background-size: cover;
     background-position: center;
     overflow: hidden;
@@ -1134,6 +1135,11 @@ aside > p:first-of-type::before {
     font-size: 1.2rem;
     color: #D4A373;
     margin-bottom: 0.8rem;
+}
+
+.as-highlight {
+    color: #44bce0;
+    font-weight: bold; /* 글씨를 굵게 */
 }
 
 .as-experience-text {
@@ -1313,6 +1319,7 @@ aside > p:first-of-type::before {
     position: relative;
     height: 100vh;
     /* background-image: url('images/home/plasma.png'); */
+    background-image: url('images/background/sky.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -2010,6 +2017,7 @@ aside > p:first-of-type::before {
     position: relative;
     min-height: 100vh;
     /* background-image: url('images/home/plasma.png'); */
+    background-image: url('images/background/sky.jpg');
     background-size: cover;
     background-position: center;
     display: flex;
@@ -2944,6 +2952,7 @@ aside > p:first-of-type::before {
 .side-project {
     position: relative;
     /* background: url('images/home/plasma.png') no-repeat center center; */
+    background-image: url('images/background/sky.jpg');
     background-size: cover;
     min-height: 100vh;
     padding: 4rem 0;
@@ -3118,6 +3127,7 @@ aside > p:first-of-type::before {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 8px;
+    font-weight: bold;
 }
 
 .side-project__card-title {
@@ -3253,6 +3263,12 @@ aside > p:first-of-type::before {
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.8s ease, visibility 0.8s ease;
+}
+
+.project-slide-layer.is-visible {
+    opacity: 1;
+    visibility: visible;
+    width: 100%;  /* 이 줄을 추가해주세요 */
 }
 
 .slide-layer__content {
