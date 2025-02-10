@@ -661,18 +661,25 @@ li {
 }
 
 .markdown-content h2 { 
-    font-size: 1.5rem;
+    font-size: 1.7rem;
     margin: 2rem 0 1.5rem;
 }
 
 .markdown-content h3 { 
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     margin: 1.5rem 0 1rem;
+}
+
+.markdown-content h4 { 
+    font-size: 1.2rem;
+    color: #fbfbfb;
+    margin: 1.5rem 0 1rem;
+    text-align: center;
 }
 
 .markdown-content p {
     margin-bottom: 1.2rem;
-    font-size: 1rem;
+    font-size: 1.2rem;
     line-height: 1.8;
 }
 
@@ -685,6 +692,7 @@ li {
 .markdown-content li {
     margin-bottom: 0.5rem;
     line-height: 1.6;
+    font-size: 1.2rem;
 }
 
 .markdown-content hr {
@@ -1060,7 +1068,7 @@ aside > p:first-of-type::before {
 .as-wrapper {
     position: relative;
     z-index: 2;
-    max-width: 1400px;
+    max-width: 1000px;
     width: 90%;    /* 전체 너비의 90% 사용 */
     margin: 0 auto;
     padding: 0 2rem;
@@ -1138,7 +1146,7 @@ aside > p:first-of-type::before {
 }
 
 .as-highlight {
-    color: #44bce0;
+    color: #9B8DD8;
     font-weight: bold; /* 글씨를 굵게 */
 }
 
@@ -1372,6 +1380,7 @@ aside > p:first-of-type::before {
     max-width: 1400px;
     height: 650px; /* 높이 조정 */
     margin-bottom: 30px; /* 페이지네이션을 위한 하단 여백 추가 */
+    padding: 0 2rem;   /* 양 옆 패딩(버튼과 카드 사이 간격 확보용) */
 }
 
 
@@ -1381,6 +1390,9 @@ aside > p:first-of-type::before {
     justify-content: center;
     min-height: 500px;
     gap: 2rem;
+    padding: 0 4rem; /* Add padding for nav buttons */
+    position: relative; /* Add this */
+    width: 100%; /* Add this */
 }
 
 /* 카드 스타일 */
@@ -1504,7 +1516,7 @@ aside > p:first-of-type::before {
 /* 네비게이션 버튼 */
 .worked-nav {
     position: absolute;
-    top: 45%;
+    top: 50%;
     transform: translateY(-50%);
     width: 50px;
     height: 50px;
@@ -1519,19 +1531,19 @@ aside > p:first-of-type::before {
     justify-content: center;
 }
 
+.worked-prev {
+    left: min(5%, 2rem); /* Responsive positioning */
+}
+
+.worked-next {
+    right: min(5%, 2rem); /* Responsive positioning */
+}
+
 .worked-nav:hover {
     background: rgba(212, 163, 115, 0.2);
     transform: translateY(-50%) scale(1.1);
 }
 
-
-.worked-prev {
-    left: 10px;
-}
-
-.worked-next {
-    right: 10px;
-}
 
 .worked-nav-icon {
     color: #fff;
@@ -1618,6 +1630,7 @@ aside > p:first-of-type::before {
     transform: translateY(20px);
     transition: transform 0.3s ease, opacity 0.3s ease;
     overflow-x: hidden; /* 가로 스크롤 방지 */
+    border: 2px solid #D4A373; /* 모든 방향의 테두리 통합 */
 }
 
 /* Webkit 브라우저용 스크롤바 숨기기 */
@@ -1625,40 +1638,16 @@ aside > p:first-of-type::before {
     display: none;
 }
 
-/* 반응형 디자인 추가 */
-@media screen and (max-height: 800px) {
-    .worked-card {
-        height: 450px; /* 화면 높이가 작을 때는 카드 높이를 더 줄임 */
-    }
-    
-    .worked-card-image {
-        height: 160px;
-    }
-    
-    .worked-card-content {
-        padding: 1.2rem;
-    }
-}
-
-/* 반응형 처리 */
-@media (max-width: 768px) {
-    .worked-modal-content {
-        width: 95%;
-        padding: 1.5rem;
-        margin: 1rem auto;
-    }
-    
-    .worked-detail-modal {
-        padding: 1rem;
-    }
-}
-
 .worked-modal-header {
+    position: sticky;
+    top: 0;
+    padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
-    padding: 1.5rem 2rem;
+    background: #1E2A3B;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
 }
 
 .worked-modal-title {
@@ -1697,34 +1686,13 @@ aside > p:first-of-type::before {
 
 
 /* 모바일 디바이스 */
-@media (max-width: 768px) {
-    .worked-nav {
-        width: clamp(35px, 4vw, 45px);
-        height: clamp(35px, 4vw, 45px);
-    }
-    
-    .worked-nav-icon {
-        font-size: clamp(1rem, 1.5vw, 1.4rem);
-    }
-    
+@media (min-width: 1440px) {
     .worked-prev {
-        left: 5px;
+        left: calc((100% - 1400px) / 2);
     }
     
     .worked-next {
-        right: 5px;
-    }
-}
-
-/* 태블릿 디바이스 */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .worked-nav {
-        width: clamp(38px, 4.5vw, 50px);
-        height: clamp(38px, 4.5vw, 50px);
-    }
-    
-    .worked-nav-icon {
-        font-size: clamp(1.1rem, 1.8vw, 1.6rem);
+        right: calc((100% - 1400px) / 2);
     }
 }
 
@@ -2078,10 +2046,17 @@ aside > p:first-of-type::before {
     background: rgba(255, 255, 255, 0.05);
     backdrop-filter: blur(10px);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 1.5rem; /* 2rem에서 1.5rem으로 줄임 */
+    height: auto; /* 고정 높이 제거 */
+    min-height: 250px; /* 최소 높이만 설정 */
+    max-height: 350px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
-    position: sticky; /* 스크롤 시 고정 */
+    position: sticky;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* 내용물 간격 균등 분배 */
 }
+
 
 .competitions-highlight-card:hover {
     transform: translateY(-5px);
@@ -2097,13 +2072,13 @@ aside > p:first-of-type::before {
 .competitions-card-title {
     font-size: 1.3rem;
     color: #fff;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .competitions-card-info {
     display: flex;
     gap: 1rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .competitions-card-host {
@@ -2121,7 +2096,7 @@ aside > p:first-of-type::before {
 
 .competitions-card-description {
     color: rgba(255, 255, 255, 0.8);
-    margin-bottom: 2rem;
+    margin-bottom: 1.5rem; /* 여백 조정 */
     line-height: 1.6;
 }
 
@@ -2130,11 +2105,14 @@ aside > p:first-of-type::before {
     background: transparent;
     border: 2px solid rgba(212, 163, 115, 0.3);
     color: #D4A373;
-    padding: 0.8rem 1.5rem;
+    padding: 0.8rem; /* 패딩 조정 */
     border-radius: 25px;
-    cursor: pointer;
     transition: all 0.3s ease;
     font-size: 0.9rem;
+    display: inline-block; /* 추가 */
+    text-decoration: none; /* 추가 */
+    text-align: center; /* 추가 */
+    cursor: pointer; /* 추가 */
 }
 
 .competitions-details-btn:hover {
@@ -2527,6 +2505,7 @@ aside > p:first-of-type::before {
     transition: all 0.3s ease;
     display: flex;
     flex-direction: column;
+    border: 2px solid #D4A373; /* 모든 방향의 테두리 통합 */
 }
 
 
@@ -2536,12 +2515,15 @@ aside > p:first-of-type::before {
 }
 
 .competitions-modal-header {
-    padding: 2rem;
+    position: sticky;
+    top: 0;
+    padding: 1.5rem 2rem;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    background-color: #1E2A3B;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    background: #1E2A3B;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 10;
     margin: 0;
 }
 
@@ -2972,7 +2954,7 @@ aside > p:first-of-type::before {
 }
 
 .side-project__wrapper {
-    position: relative;
+    position: relative;    
     z-index: 2;
     max-width: 1600px;
     margin: 0 auto;
@@ -3274,17 +3256,17 @@ aside > p:first-of-type::before {
 .slide-layer__content {
     position: fixed;
     right: 0;
-    left: auto;
+    left: 0;
+    margin: 0 auto; /* 가운데 정렬을 위해 추가 */
     bottom: -100%;
     top: 50px;
-    width: min(1200px, 100%) !important;
-    height: min(900px, 100vh);
+    width: 100%; /* 전체 너비 사용 */
+    max-width: 1200px; /* 최대 너비 설정 */
+    height: 90vh; /* 뷰포트 높이의 90% */
     transition: bottom 0.8s ease-out;
     overflow-y: scroll;
-    border-left: 2px solid #D4A373;
-    border-top: 2px solid #D4A373;
-    border-bottom: 2px solid #D4A373;
-    border-radius: 30px 0 0 30px;
+    border: 2px solid #D4A373; /* 모든 방향의 테두리 통합 */
+    border-radius: 30px; /* 모든 모서리 둥글게 */
     background: #1E2A3B !important;
     background-size: cover;
     background-position: center;
@@ -3711,3 +3693,71 @@ aside > p:first-of-type::before {
 
 
 
+
+.image-lightbox {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 9999;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.image-lightbox.active {
+    opacity: 1;
+}
+
+.lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.9);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-controls {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 10000;
+}
+
+.lightbox-controls button {
+    width: 40px;
+    height: 40px;
+    border: none;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-controls button:hover {
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.lightbox-image {
+    max-width: 90%;
+    max-height: 90vh;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+}
+
+.lightbox-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

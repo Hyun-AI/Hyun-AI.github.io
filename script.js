@@ -1594,7 +1594,7 @@ class CompetitionsManager {
         this.tabContents = document.querySelectorAll('.competitions-tab-content');
         this.modal = document.getElementById('competitions-modal');
         this.modalOverlay = document.getElementById('competitions-modal-overlay');
-        this.detailsBtn = document.querySelector('.competitions-details-btn');
+        // this.detailsBtn = document.querySelector('.competitions-details-btn');
         this.filterButtons = document.querySelectorAll('.competitions-controls button');
 
         // 이벤트 리스너 초기화
@@ -1825,8 +1825,8 @@ const sideProjectData = {
         type: 'Chatbot',
         description: 'AI 기반의 지능형 챗봇 시스템입니다.',
         headerText: "Side Projects - AI 챗봇",
-        mainDescription: "자연어 처리 기술을 활용한 지능형 챗봇으로 사용자와 자연스러운 대화가 가능합니다.", 
-        tags: ['AI', 'NLP'],
+        mainDescription: "데이터 관련 종사자가 아니더라도 데이터베이스 안에 있는 데이터를 자유자재로 다룰 수 있도록 만들었습니다. 자연어 처리 기술을 활용한 지능형 챗봇으로 사용자와 자연스러운 대화가 가능합니다.",
+        tags: ['AI', 'NLP', 'ChatGPT', 'SQL'],
         mdFile: 'md/side-project/자연어DB관리.md',
         image: 'images/background/switzerland.jpg'
     }
@@ -2041,6 +2041,125 @@ class ProjectSlider {
     getNextIndex() {
         return (this.currentIndex + 1) % this.totalSlides;
     }
+// 이미지 라이트박스 표시 함수 개선
+async showProjectDetail(projectId) {
+    const slideLayer = document.querySelector('.project-slide-layer');
+    const slideTitle = slideLayer.querySelector('.slide-layer__title');
+    const slideBody = slideLayer.querySelector('.slide-layer__body');
+    
+    try {
+        const project = sideProjectData[projectId];
+        if (!project) {
+            throw new Error(`프로젝트 ID "${projectId}"를 찾을 수 없습니다.`);
+        }
+
+        slideTitle.textContent = project.title;
+        slideBody.innerHTML = '<div class="loading">Loading...</div>';
+        
+        slideLayer.classList.add('is-visible');
+        document.body.style.overflow = 'hidden';
+
+        const markdownContent = await loadMarkdownFile(project.mdFile);
+        const parsedContent = marked.parse(markdownContent);
+        
+        slideBody.innerHTML = parsedContent;
+
+        // 이미지 처리 함수 호출
+        this.handleImages(slideBody);
+
+    } catch (error) {
+        console.error('프로젝트 로드 에러:', error);
+        slideBody.innerHTML = `
+            <div class="slide-layer__error">
+                <h3>프로젝트를 불러오는데 실패했습니다</h3>
+                <p>${error.message}</p>
+            </div>
+        `;
+    }
+}
+
+handleImages(container) {
+    const images = container.querySelectorAll('img');
+    images.forEach(img => {
+        img.addEventListener('load', () => {
+            img.classList.add('loaded');
+        });
+
+        img.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            this.showImageLightbox(img.src);
+        });
+    });
+}
+
+showImageLightbox(imageSrc) {
+    const lightbox = document.createElement('div');
+    lightbox.className = 'image-lightbox';
+    lightbox.innerHTML = `
+        <div class="lightbox-overlay">
+            <div class="lightbox-controls">
+                <button type="button" class="lightbox-zoom-in">+</button>
+                <button type="button" class="lightbox-zoom-out">-</button>
+                <button type="button" class="lightbox-close">&times;</button>
+            </div>
+            <div class="lightbox-container">
+                <img src="${imageSrc}" alt="확대된 이미지" class="lightbox-image">
+            </div>
+        </div>
+    `;
+
+    // 줌 관련 변수
+    let scale = 1;
+    let translateX = 0;
+    let translateY = 0;
+
+    const updateTransform = () => {
+        const img = lightbox.querySelector('.lightbox-image');
+        img.style.transform = `scale(${scale}) translate(${translateX}px, ${translateY}px)`;
+    };
+
+    // 줌 인 버튼
+    const zoomInBtn = lightbox.querySelector('.lightbox-zoom-in');
+    zoomInBtn.onclick = (e) => {
+        e.stopPropagation();
+        scale = Math.min(scale + 0.2, 3);
+        updateTransform();
+    };
+
+    // 줌 아웃 버튼
+    const zoomOutBtn = lightbox.querySelector('.lightbox-zoom-out');
+    zoomOutBtn.onclick = (e) => {
+        e.stopPropagation();
+        scale = Math.max(scale - 0.2, 0.5);
+        updateTransform();
+    };
+
+    // 닫기 기능
+    const close = () => {
+        lightbox.classList.add('fade-out');
+        setTimeout(() => document.body.removeChild(lightbox), 300);
+    };
+
+    lightbox.querySelector('.lightbox-close').onclick = (e) => {
+        e.stopPropagation();
+        close();
+    };
+
+    lightbox.querySelector('.lightbox-overlay').onclick = (e) => {
+        if (e.target.classList.contains('lightbox-overlay')) {
+            close();
+        }
+    };
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') close();
+    });
+
+    document.body.appendChild(lightbox);
+    setTimeout(() => lightbox.classList.add('active'), 50);
+}
+    
 }
 
 // 모달 닫기 함수
@@ -2101,3 +2220,13 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     });
 });
+
+
+
+
+
+
+
+
+
+
