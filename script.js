@@ -1815,7 +1815,7 @@ const sideProjectData = {
         description: '개인 재무를 관리할 수 있는 스마트한 가계부 도구입니다.',
         headerText: "Side Projects - 가계부",
         mainDescription: "AI 기반의 지능형 가계부로 수입/지출을 효과적으로 관리하고 분석할 수 있습니다.",
-        tags: ['Finance', 'AI'],
+        tags: ['Finance', 'Gen-AI'],
         mdFile: 'md/side-project/가계부-챗봇.md',
         image: 'images/side-project/가계부.jpg'
     },
@@ -1826,7 +1826,7 @@ const sideProjectData = {
         description: 'AI 기반의 지능형 챗봇 시스템입니다.',
         headerText: "Side Projects - AI 챗봇",
         mainDescription: "데이터 관련 종사자가 아니더라도 데이터베이스 안에 있는 데이터를 자유자재로 다룰 수 있도록 만들었습니다. 자연어 처리 기술을 활용한 지능형 챗봇으로 사용자와 자연스러운 대화가 가능합니다.",
-        tags: ['AI', 'NLP', 'ChatGPT', 'SQL'],
+        tags: ['Gen-AI', 'NLP', 'Database'],
         mdFile: 'md/side-project/자연어DB관리.md',
         image: 'images/background/switzerland.jpg'
     }
